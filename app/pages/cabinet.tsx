@@ -10,6 +10,7 @@ export default function CabinetPage() {
   const closeModal = () => setOpenDept(null);
 
   const activeDept = departments.find((d) => d.id === openDept) ?? null;
+  
   return (
     <div className="flex flex-col bg-white">
       {/* ── Hero / Header ───────────────────────────────────── */}
@@ -623,11 +624,11 @@ export default function CabinetPage() {
           </div>
         </div>
       </div>
-    </div>
 
       {/* ── Department Modal Overlay ── */}
       {activeDept && (
         <DepartmentModal department={activeDept} onClose={closeModal} />
       )}
+    </div>
   );
 }

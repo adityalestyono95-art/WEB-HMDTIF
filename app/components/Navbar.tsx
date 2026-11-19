@@ -15,7 +15,7 @@ export default function Navbar() {
   
   const terang = pathname.startsWith("/news") || pathname.startsWith("/cabinet")
 
-  
+ 
   const warnaHeader = terang ? "bg-[#FFFBF0]" : "bg-[#1e4d73]"
   const warnaLogo = terang ? "border-transparent bg-[#2d7a94]" : "border-white/30 bg-white/15 backdrop-blur-md"
   const warnaMenu = terang ? "border-black/5 bg-[#FFF4D6]" : "border-white/30 bg-white/15 backdrop-blur-md"
@@ -28,6 +28,9 @@ export default function Navbar() {
   const biasa = terang
     ? "pb-1 border-b-2 border-transparent text-[#2d5373]/80 hover:border-yellow-400 hover:text-[#2d5373] transition-colors duration-300 ease-in-out"
     : "pb-1 border-b-2 border-transparent hover:border-yellow-400 hover:text-white transition-colors duration-300 ease-in-out"
+
+ 
+  if (pathname === "/login") return null
 
   return (
     <header className={`px-4 py-4 md:px-8 md:py-5 ${warnaHeader}`}>

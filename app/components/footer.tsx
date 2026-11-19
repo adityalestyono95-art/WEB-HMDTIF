@@ -1,10 +1,18 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { FaYoutube, FaInstagram } from 'react-icons/fa'
 import { MessageCircle, Globe, MapPin, Mail } from 'lucide-react'
 
-export default function footer() {
+export default function Footer() {
+  const pathname = usePathname()
+
+ 
+  if (pathname === "/login") return null
+
   return (
     <footer className='w-full bg-[#1e4d73] text-white px-6 py-10 md:px-10'>
       <div className="container-footer grid grid-cols-1 gap-10 sm:grid-cols-2 lg:flex lg:justify-between">

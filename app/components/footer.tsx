@@ -6,9 +6,9 @@ import { MessageCircle, Globe, MapPin, Mail } from 'lucide-react'
 
 export default function footer() {
   return (
-    <footer className='w-full bg-[#1e4d73] text-white px-10 py-10'>
-      <div className="container-footer flex justify-between gap-10">
-        <div className="footer-box max-w-sm">
+    <footer className='w-full bg-[#1e4d73] text-white px-6 py-10 md:px-10'>
+      <div className="container-footer grid grid-cols-1 gap-10 sm:grid-cols-2 lg:flex lg:justify-between">
+        <div className="footer-box max-w-sm sm:col-span-2 lg:col-span-1">
           <div className="kiri flex items-center gap-3">
             <Image src={"/images/logo-hmdtif.png"} width={50} height={50} alt='logo hmdtif'></Image>
             <div className="leading-tight">
@@ -18,7 +18,7 @@ export default function footer() {
           </div>
           <p className="mt-5 text-xs leading-relaxed text-white/80">Himpunan Mahasiswa Departement Teknik Informatika,</p>
           <p className="text-xs leading-relaxed text-white/80">Fakultas Ilmu Komputer, Universitas Brawijaya.</p>
-         
+
           <div className="mt-5 flex gap-3">
             <Link href={""} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/10 hover:bg-white/20">
               <FaYoutube size={14} />
@@ -71,16 +71,11 @@ export default function footer() {
           </ul>
         </div>
 
-        <div className="footer-box max-w-[220px]">
+        <div className="footer-box sm:col-span-2 lg:col-span-1 lg:max-w-[220px]">
            <h3 className="mb-4 text-xs font-bold tracking-widest text-yellow-400">ADDRESS</h3>
            <div className="flex gap-2 text-xs leading-relaxed text-white/80">
              <MapPin size={14} className="mt-0.5 shrink-0" />
-             <div>
-               <p>Gedung Kreativitas Mahasiswa, </p>
-               <p>Fakultas Ilmu Komputer Universitas</p>
-               <p>Brawijaya, Jl. Veteran No. 8,</p>
-               <p>Lowokwaru, Malang</p>
-             </div>
+             <p>Gedung Kreativitas Mahasiswa, Fakultas Ilmu Komputer Universitas Brawijaya, Jl. Veteran No. 8, Lowokwaru, Malang</p>
            </div>
 
            <h3 className="mb-3 mt-6 text-xs font-bold tracking-widest text-yellow-400">CONTACT</h3>
@@ -93,8 +88,7 @@ export default function footer() {
 
       <hr className="my-8 border-t border-white/15" />
 
-      <p className='text-center text-xs text-yellow-400'>Made with <span className="text-red-500">♥</span> by Departemen PIT (Pengembangan Informasi dan Teknologi) — HMDTIF 2026</p>
-
+      <p className='text-center text-[11px] leading-relaxed text-yellow-400 md:text-xs'>Made with <span className="text-red-500">♥</span> by Departemen PIT (Pengembangan Informasi dan Teknologi) — HMDTIF 2026</p>
 
     </footer>
   )

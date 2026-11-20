@@ -4,8 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FaYoutube, FaInstagram } from 'react-icons/fa'
-import { MessageCircle, Globe, MapPin, Mail } from 'lucide-react'
+import { MapPin, Mail } from 'lucide-react'
 
 export default function Footer() {
   const pathname = usePathname()
@@ -27,56 +26,24 @@ export default function Footer() {
           <p className="mt-5 text-xs leading-relaxed text-white/80">Himpunan Mahasiswa Departement Teknik Informatika,</p>
           <p className="text-xs leading-relaxed text-white/80">Fakultas Ilmu Komputer, Universitas Brawijaya.</p>
 
-          <div className="mt-5 flex gap-3">
-            <Link href={""} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/10 hover:bg-white/20">
-              <FaYoutube size={14} />
-            </Link>
-            <Link href={""} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/10 hover:bg-white/20">
-              <FaInstagram size={14} />
-            </Link>
-            <Link href={""} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/10 hover:bg-white/20">
-              <MessageCircle size={14} />
-            </Link>
-            <Link href={""} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/10 hover:bg-white/20">
-              <Globe size={14} />
-            </Link>
-          </div>
         </div>
 
         <div className="footer-box">
             <h3 className="mb-4 text-xs font-bold tracking-widest text-yellow-400">LINKS</h3>
-            <ul className="space-y-3 text-xs text-white/80">
+            <ul className="space-y-0 text-xs text-white/80">
               <li>
-                <Link href={"/"} className="hover:text-yellow-400">Home</Link>
+                <Link href={"/"} className="-mx-2 inline-flex min-h-11 min-w-11 items-center px-2 hover:text-yellow-400">Home</Link>
               </li>
               <li>
-                <Link href={"/news"} className="hover:text-yellow-400">News</Link>
+                <Link href={"/news"} className="-mx-2 inline-flex min-h-11 min-w-11 items-center px-2 hover:text-yellow-400">News</Link>
               </li>
               <li>
-                <Link href={"/about"} className="hover:text-yellow-400">About</Link>
+                <Link href={"/#about"} className="-mx-2 inline-flex min-h-11 min-w-11 items-center px-2 hover:text-yellow-400">About</Link>
               </li>
               <li>
-                <Link href={"/cabinet"} className="hover:text-yellow-400">Cabinet</Link>
+                <Link href={"/cabinet"} className="-mx-2 inline-flex min-h-11 min-w-11 items-center px-2 hover:text-yellow-400">Cabinet</Link>
               </li>
             </ul>
-        </div>
-
-        <div className="footer-box">
-          <h3 className="mb-4 text-xs font-bold tracking-widest text-yellow-400">QUICK LINK </h3>
-          <ul className="space-y-3 text-xs text-white/80">
-            <li>
-              <Link href={""} className="hover:text-yellow-400">Open Recruitment Staff Muda 2026</Link>
-            </li>
-            <li>
-              <Link href={""} className="hover:text-yellow-400">Echo Advo & Crisis Center KRS SA</Link>
-            </li>
-            <li>
-              <Link href={""} className="hover:text-yellow-400">Informatics Partnership & HMDTIF Wear</Link>
-            </li>
-            <li>
-              <Link href={""} className="hover:text-yellow-400">UI Design System & Layer Specs</Link>
-            </li>
-          </ul>
         </div>
 
         <div className="footer-box sm:col-span-2 lg:col-span-1 lg:max-w-[220px]">
@@ -96,7 +63,7 @@ export default function Footer() {
 
       <hr className="my-8 border-t border-white/15" />
 
-      <p className='text-center text-[11px] leading-relaxed text-yellow-400 md:text-xs'>Made with <span className="text-red-500">♥</span> by Departemen PIT (Pengembangan Informasi dan Teknologi) — HMDTIF 2026</p>
+      <p className='text-center text-[11px] leading-relaxed text-yellow-400 md:text-xs'>Made with <span aria-hidden="true" className="text-red-400">♥</span> by Departemen PIT (Pengembangan Informasi dan Teknologi), HMDTIF 2026</p>
 
     </footer>
   )

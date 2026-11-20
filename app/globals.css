@@ -1,3 +1,35 @@
 @import "tailwindcss";
 
 
+
+/* Hormati preferensi sistem: hentikan transisi dan animasi non-esensial. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Kontrol yang tidak bisa dipakai harus terlihat tidak bisa dipakai. */
+:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+/* Getaran kecil saat submit gagal. Amplitudo 4px, sekali jalan, 320ms:
+   cukup terasa di sudut mata tanpa membuat halaman terasa rusak. */
+@keyframes shake-subtle {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-4px); }
+  40%      { transform: translateX(4px); }
+  60%      { transform: translateX(-3px); }
+  80%      { transform: translateX(3px); }
+}
+
+.animate-shake {
+  animation: shake-subtle 320ms ease-in-out 1;
+}

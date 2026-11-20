@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 
 export default function Navbar() {
@@ -11,6 +11,35 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
 
   const pathname = usePathname()
+  const router = useRouter()
+
+  // Sesi tidak diketahui di server karena cookie httpOnly, jadi status login
+  // ditanyakan sekali ke API setelah halaman tampil.
+  const [masuk, setMasuk] = React.useState<boolean | null>(null)
+
+  React.useEffect(() => {
+    let batal = false
+    fetch("/api/me")
+      .then((r) => { if (!batal) setMasuk(r.ok) })
+      .catch(() => { if (!batal) setMasuk(false) })
+    return () => { batal = true }
+  }, [pathname])
+
+  const keluar = async () => {
+    await fetch("/api/logout", { method: "POST" })
+    setMasuk(false)
+    router.push("/")
+    router.refresh()
+  }
+
+  React.useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+    document.addEventListener("keydown", onKey)
+    return () => document.removeEventListener("keydown", onKey)
+  }, [open])
 
   
   const terang = pathname.startsWith("/news") || pathname.startsWith("/cabinet")
@@ -34,26 +63,28 @@ export default function Navbar() {
 
   return (
     <header className={`px-4 py-4 md:px-8 md:py-5 ${warnaHeader}`}>
-        <div className="container flex flex-wrap items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr]">
+        <div className="container mx-auto flex flex-wrap items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr]">
           <div className={`navbar-box justify-self-start flex items-center gap-3 rounded-full border px-4 py-2 md:px-5 md:py-2.5 shadow-lg ${warnaLogo}`}>
             <Image src={"/images/logo-hmdtif.png"} width={30} height={30} alt='Logo hmdtif'></Image>
             <div className="kiri leading-tight">
               <h3 className="text-sm font-bold tracking-wider text-white">HMDTIF</h3>
-              <p className="text-[9px] tracking-widest text-yellow-400">BAHTERA GATRA</p>
+              <p className="text-[9px] tracking-widest text-yellow-200">BAHTERA GATRA</p>
             </div>
           </div>
 
 
           <button
             onClick={() => setOpen(!open)}
-            className={`md:hidden flex h-10 w-10 items-center justify-center rounded-full border ${warnaTombol}`}
-            aria-label="Buka menu"
+            className={`md:hidden flex h-11 w-11 items-center justify-center rounded-full border ${warnaTombol}`}
+            aria-label={open ? "Tutup menu" : "Buka menu"}
+            aria-expanded={open}
+            aria-controls="menu-utama"
           >
-            {open ? <X size={18} /> : <Menu size={18} />}
+            {open ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
           </button>
 
-          <div className={`${open ? 'block' : 'hidden'} navbar-box mt-4 w-full rounded-2xl border px-6 py-4 shadow-lg md:mt-0 md:block md:w-auto md:px-8 md:py-3 ${warnaMenu}`}>
-            <ul className={`flex flex-col gap-4 text-xs tracking-widest md:flex-row md:gap-8 ${terang ? "text-[#2d5373]" : "text-white/70"}`}>
+          <nav id="menu-utama" aria-label="Navigasi utama" className={`${open ? 'block' : 'hidden'} navbar-box mt-4 w-full rounded-2xl border px-6 py-4 shadow-lg md:mt-0 md:block md:w-auto md:px-8 md:py-3 ${warnaMenu}`}>
+            <ul className={`flex flex-col gap-1 text-xs tracking-widest md:flex-row md:gap-8 ${terang ? "text-[#2d5373]" : "text-white/90"}`}>
               <li>
                 <Link href={"/"} onClick={() => setOpen(false)} className={pathname === "/" ? aktif : biasa}>HOME</Link>
               </li>
@@ -61,21 +92,41 @@ export default function Navbar() {
                 <Link href={"/news"} onClick={() => setOpen(false)} className={pathname.startsWith("/news") ? aktif : biasa}>NEWS</Link>
               </li>
               <li>
-                <Link href={"/about"} onClick={() => setOpen(false)} className={pathname.startsWith("/about") ? aktif : biasa}>ABOUT</Link>
+                <Link href={"/#about"} onClick={() => setOpen(false)} className={biasa}>ABOUT</Link>
               </li>
               <li>
                 <Link href={"/cabinet"} onClick={() => setOpen(false)} className={pathname.startsWith("/cabinet") ? aktif : biasa}>CABINET</Link>
               </li>
 
               <li className="md:hidden">
-                <Link href={"/login"} className="inline-block rounded-lg border border-yellow-400/60 bg-[#FFF4D6] px-5 py-2 font-bold tracking-wider text-[#1e3a5f]">LOGIN</Link>
+                {masuk ? (
+                  <button
+                    type="button"
+                    onClick={keluar}
+                    className="inline-flex min-h-11 items-center rounded-lg border border-yellow-400/60 bg-[#FFF4D6] px-5 py-2 font-bold tracking-wider text-[#1e3a5f]"
+                  >
+                    KELUAR
+                  </button>
+                ) : (
+                  <Link href={"/login"} className="inline-flex min-h-11 items-center rounded-lg border border-yellow-400/60 bg-[#FFF4D6] px-5 py-2 font-bold tracking-wider text-[#1e3a5f]">LOGIN</Link>
+                )}
               </li>
             </ul>
-          </div>
+          </nav>
 
 
           <div className="nabar-box hidden md:block justify-self-end rounded-lg border border-yellow-400/60 bg-[#FFF4D6] px-5 py-2 shadow-md">
+            {masuk ? (
+              <button
+                type="button"
+                onClick={keluar}
+                className="text-xs font-bold tracking-wider text-[#1e3a5f] hover:opacity-75"
+              >
+                KELUAR
+              </button>
+            ) : (
               <Link href={"/login"} className="text-xs font-bold tracking-wider text-[#1e3a5f] hover:opacity-75">LOGIN</Link>
+            )}
           </div>
         </div>
     </header>

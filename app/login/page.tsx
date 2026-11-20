@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react'
 
 export default function Page() {
   const router = useRouter()
@@ -17,14 +17,26 @@ export default function Page() {
  
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [errorSeq, setErrorSeq] = useState(0)
+  const [bergetar, setBergetar] = useState(false)
+  const errorRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (error) errorRef.current?.focus()
+  }, [error])
+
+  React.useEffect(() => {
+    if (errorSeq > 0) setBergetar(true)
+  }, [errorSeq])
 
   const kirim = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
     setLoading(true)
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
+      // Same-origin lewat rewrite di next.config.ts, jadi cookie sesi ikut
+      // terkirim dan tidak ada CORS.
+      const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email, password: sandi }),
@@ -33,18 +45,21 @@ export default function Page() {
       const data = await res.json()
 
       if (!res.ok) {
-       
-        setError(data.message || "Login gagal, coba lagi")
+        // Pesan server hanya ditampilkan untuk kegagalan yang memang ditujukan
+        // ke pengguna. 5xx bisa memuat detail internal, jadi diganti.
+        const aman = res.status < 500
+        setError(aman && data.detail ? data.detail : "Server sedang bermasalah. Coba lagi beberapa saat.")
+        setErrorSeq((n) => n + 1)
         setLoading(false)
         return
       }
 
-    
-      localStorage.setItem("token", data.token)
+      // Server sudah menaruh cookie httpOnly. Tidak ada token di JavaScript.
       router.push("/")
-    } catch (err) {
-      
+      router.refresh()
+    } catch {
       setError("Tidak bisa terhubung ke server")
+      setErrorSeq((n) => n + 1)
     }
 
     setLoading(false)
@@ -79,7 +94,7 @@ export default function Page() {
 
       {/* Panel kanan */}
       <div className="login-box flex flex-col bg-[#FFFBF0] px-6 py-8 md:px-10">
-        <Link href={"/"} className="flex items-center gap-2 text-xs font-semibold text-[#2d5373] hover:text-[#3a8fa3] transition-colors duration-300">
+        <Link href={"/"} className="flex min-h-11 items-center gap-2 text-xs font-semibold text-[#2d5373] hover:text-[#1f7189] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f7189]">
           <ArrowLeft size={14} />
           Kembali ke beranda
         </Link>
@@ -95,50 +110,77 @@ export default function Page() {
             Masuk ke akunmu untuk melanjutkan perjalanan bersama Bahtera Gatra.
           </p>
 
-          <form onSubmit={kirim} className="mt-8">
-            <label className="text-xs font-semibold text-[#1e3a5f]">Email</label>
+          <form
+            onSubmit={kirim}
+            onAnimationEnd={() => setBergetar(false)}
+            className={`mt-8 ${bergetar ? "animate-shake" : ""}`}
+          >
+            <label htmlFor="email" className={`text-xs font-semibold ${error ? "text-red-700" : "text-[#1e3a5f]"}`}>Email</label>
             <input
+              id="email"
+              name="email"
               type="email"
+              autoComplete="username"
+              inputMode="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); if (error) setError("") }}
               placeholder="Masukkan alamat email"
               required
-              className="mt-2 w-full rounded-lg border border-black/10 bg-[#FFFDF6] px-4 py-3.5 text-sm text-[#1e3a5f] outline-none placeholder:text-[#2d5373]/50 focus:border-[#3a8fa3]"
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? "login-error" : undefined}
+              className={`mt-2 w-full rounded-lg border bg-[#FFFDF6] px-4 py-3.5 text-sm text-[#1e3a5f] outline-none placeholder:text-[#2d5373]/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f7189] ${
+                error ? "border-red-600 ring-1 ring-red-600" : "border-black/10 focus:border-[#1f7189]"
+              }`}
             />
 
-            <label className="mt-5 block text-xs font-semibold text-[#1e3a5f]">Kata sandi</label>
-            <div className="mt-2 flex items-center rounded-lg border border-black/10 bg-[#FFFDF6] px-4 focus-within:border-[#3a8fa3]">
+            <label htmlFor="sandi" className={`mt-5 block text-xs font-semibold ${error ? "text-red-700" : "text-[#1e3a5f]"}`}>Kata sandi</label>
+            <div className={`mt-2 flex items-center rounded-lg border bg-[#FFFDF6] px-4 ${
+              error ? "border-red-600 ring-1 ring-red-600" : "border-black/10 focus-within:border-[#1f7189]"
+            }`}>
               <input
+                id="sandi"
+                name="password"
                 type={lihat ? "text" : "password"}
+                autoComplete="current-password"
                 value={sandi}
-                onChange={(e) => setSandi(e.target.value)}
+                onChange={(e) => { setSandi(e.target.value); if (error) setError("") }}
                 placeholder="Masukkan kata sandi"
                 required
-                className="w-full bg-transparent py-3.5 text-sm text-[#1e3a5f] outline-none placeholder:text-[#2d5373]/50"
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? "login-error" : undefined}
+                className="w-full bg-transparent py-3.5 text-sm text-[#1e3a5f] outline-none placeholder:text-[#2d5373]/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f7189]"
               />
               <button
                 type="button"
                 onClick={() => setLihat(!lihat)}
-                className="text-xs font-semibold text-[#2d5373] hover:text-[#3a8fa3]"
+                aria-pressed={lihat}
+                aria-controls="sandi"
+                aria-label={lihat ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
+                className="-mr-2 flex min-h-11 min-w-11 items-center justify-center rounded-md px-2 text-xs font-semibold text-[#2d5373] hover:text-[#1f7189] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f7189]"
               >
                 {lihat ? "Sembunyi" : "Lihat"}
               </button>
             </div>
 
-            <div className="mt-5 flex items-center justify-between text-xs">
-              <label className="flex items-center gap-2 text-[#2d5373]">
-                <input type="checkbox" className="h-4 w-4" />
-                Ingat saya
-              </label>
-              <Link href={""} className="font-bold text-[#1e3a5f] hover:text-[#3a8fa3]">Lupa kata sandi?</Link>
-            </div>
-
-            {error && <p className="mt-4 text-xs font-semibold text-red-600">{error}</p>}
+            {error && (
+              <div
+                key={errorSeq}
+                id="login-error"
+                ref={errorRef}
+                tabIndex={-1}
+                role="alert"
+                className="mt-5 flex items-start gap-2 rounded-lg border-2 border-red-700 bg-red-50 px-4 py-3 text-xs font-semibold leading-relaxed text-red-800 focus:outline-2 focus:outline-offset-4 focus:outline-[#1e3a5f]"
+              >
+                <AlertCircle size={16} aria-hidden="true" className="mt-px shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
 
             <button
               type="submit"
               disabled={loading}
-              className="mt-6 flex w-full items-center justify-between rounded-lg bg-[#2d5373] px-6 py-3.5 text-sm font-bold text-white hover:bg-[#1e3a5f] transition-colors duration-300 disabled:opacity-60"
+              aria-busy={loading}
+              className="mt-6 flex w-full items-center justify-between rounded-lg bg-[#2d5373] px-6 py-3.5 text-sm font-bold text-white hover:bg-[#1e3a5f] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f7189] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <span className="flex-1 text-center">{loading ? "Memproses..." : "Masuk"}</span>
               <ArrowRight size={16} />
@@ -147,11 +189,11 @@ export default function Page() {
 
           <p className="mt-8 text-center text-[11px] text-[#2d5373]/80">Belum memiliki akun atau mengalami kendala?</p>
           <p className="mt-2 text-center">
-            <Link href={""} className="text-xs font-bold text-[#1e3a5f] hover:text-[#3a8fa3]">Hubungi admin HMDTIF</Link>
+            <a href="mailto:hmdtif@ub.ac.id" className="inline-flex min-h-11 items-center text-xs font-bold text-[#1e3a5f] hover:text-[#1f7189] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f7189]">Hubungi admin HMDTIF</a>
           </p>
         </div>
 
-        <p className="text-center text-[11px] text-[#2d5373]/70">© 2026 HMDTIF FILKOM UB · Bahtera Gatra</p>
+        <p className="text-center text-[11px] text-[#2d5373]/85">© 2026 HMDTIF FILKOM UB · Bahtera Gatra</p>
       </div>
     </div>
   )

@@ -25,7 +25,7 @@ export default function Home() {
         <div className="container relative mx-auto flex flex-col items-center px-4">
           <div className="penutup-tulisan rounded-full border border-white/30 bg-white/15 px-4 py-1.5 backdrop-blur-md">
             <p className="text-center text-[8px] font-medium tracking-widest text-white md:text-[10px]">
-              <span className="mr-2 text-yellow-300">✦</span>
+              <span aria-hidden="true" className="mr-2 text-yellow-300">✦</span>
               HIMPUNAN MAHASISWA DEPARTEMEN TEKNIK INFORMATIKA • FILKOM UB
             </p>
           </div>
@@ -47,8 +47,8 @@ export default function Home() {
 
       {/* Bagian dua ini */}
       <div className=" bg-[#FFFBF0] py-10 md:py-16">
-        <h3 className="text-center text-[10px] font-semibold tracking-[0.25em] text-[#2a8aa6]">SAMBUTAN PIMPINAN HIMPUNAN</h3>
-        <h1 className="text-center text-3xl font-semibold text-[#2c5575] md:text-5xl">Welcoming Speech</h1>
+        <h3 className="text-center text-[10px] font-semibold tracking-[0.25em] text-[#1f7189]">SAMBUTAN PIMPINAN HIMPUNAN</h3>
+        <h2 className="text-center text-3xl font-semibold text-[#2c5575] md:text-5xl">Welcoming Speech</h2>
 
         <div className="container-home mt-10 flex flex-col items-center justify-center gap-10 px-6 md:mt-16 md:px-8 lg:flex-row lg:gap-16">
           <div className="home-box">
@@ -64,11 +64,11 @@ export default function Home() {
           <div className="home-box flex w-full max-w-2xl flex-col gap-5 rounded-2xl border border-gray-300 bg-[#FFFDF6] p-5 shadow-[6px_6px_0_0_#F2D98B,10px_10px_0_0_#F7E7B0] sm:flex-row md:shadow-[8px_8px_0_0_#F2D98B,14px_14px_0_0_#F7E7B0]">
             <div className="dalam-gambar relative w-full shrink-0 sm:w-[200px]">
               <Image src={"/images/KAHIM-HMDTIF.png"} alt="Gambar Kahim" width={200} height={275} className="h-[300px] w-full rounded-xl border border-yellow-500 object-cover sm:h-[275px] sm:w-[200px]"></Image>
-              <span className="absolute left-1/2 top-2 -translate-x-1/2 rounded bg-black/40 px-3 py-0.5 text-[8px] tracking-widest text-white">KETUA HIMPUNAN</span>
+              <span className="absolute left-1/2 top-2 -translate-x-1/2 rounded bg-black/70 px-3 py-0.5 text-[8px] tracking-widest text-white">KETUA HIMPUNAN</span>
             </div>
 
             <div className="text-xs leading-relaxed text-gray-700">
-              <p className="text-sm font-semibold text-[#2a8aa6]">Say Hello to BAHTERA GATRA </p>
+              <p className="text-sm font-semibold text-[#1f7189]">Say Hello to BAHTERA GATRA </p>
               <p className="mt-2 font-bold text-[#2c5575]">Tumbuh Bersama, Satukan Gatra</p>
 
               <p className="mt-3">Di Kabinet Bahtera Gatra 2026, kami membawa visi besar untuk mewujudkan lingkungan mahasiswa Departemen Teknik Informatika yang saling terhubung,berkembang secara profesional, dan didukung advokasi yang responsif serta suportif.</p>
@@ -90,13 +90,13 @@ export default function Home() {
 
 
       {/* About */}
-      <div className="container-about mx-6 mt-12 flex flex-col gap-10 md:mx-10 md:mt-20 md:flex-row md:gap-12 lg:mx-16">
+      <div id="about" className="container-about mx-6 mt-12 flex scroll-mt-24 flex-col gap-10 md:mx-10 md:mt-20 md:flex-row md:gap-12 lg:mx-16">
         <div className="box-kiri flex-1">
-          <p className="text-[11px] font-semibold tracking-[0.2em] text-[#3a8fa3] uppercase mb-2">
+          <p className="text-[11px] font-semibold tracking-[0.2em] text-[#1f7189] uppercase mb-2">
             Profil Organisasi
           </p>
-          <h3 className="text-4xl font-bold leading-tight text-[#2d5373] md:text-5xl">About HMDTIF</h3>
-          <h3 className="text-4xl font-bold leading-tight text-[#2d5373] md:text-5xl">FILKOM UB</h3>
+          <h2 className="text-4xl font-bold leading-tight text-[#2d5373] md:text-5xl">About HMDTIF</h2>
+          <h2 className="text-4xl font-bold leading-tight text-[#2d5373] md:text-5xl">FILKOM UB</h2>
           <br />
           <p className="max-w-md text-left text-sm leading-relaxed text-[#2d5373]/80">
             Segala hal yang perlu Anda ketahui tentang Himpunan
@@ -106,10 +106,10 @@ export default function Home() {
           </p>
           <br />
           <Link
-            href="/about"
-            className="inline-block text-xs font-bold text-[#2d5373] border-b-2 border-yellow-400 pb-1"
+            href="#about"
+            className="inline-flex min-h-11 items-center border-b-2 border-yellow-400 text-xs font-bold text-[#2d5373]"
           >
-            See details →
+            Selengkapnya
           </Link>
         </div>
 
@@ -118,7 +118,7 @@ export default function Home() {
           <div className="background bg-[#FFF4D6] rounded-2xl border border-black/10 shadow-lg px-5 py-5 md:px-6 -rotate-1">
             <div className="flex justify-between items-center">
               <h3 className="text-left text-xl font-bold text-[#2d5373]">Overview</h3>
-              <p className="text-[#3a8fa3] font-semibold">01</p>
+              <p className="text-[#1f7189] font-semibold">01</p>
             </div>
             <hr className="my-3 border-black/20" />
             <p className="text-sm leading-relaxed text-[#2d5373]">
@@ -134,7 +134,7 @@ export default function Home() {
           <div className="background bg-[#FFF4D6] rounded-2xl border border-black/10 shadow-lg px-5 py-5 md:px-6 rotate-1">
             <div className="flex justify-between items-center">
               <h3 className="text-left text-xl font-bold text-[#2d5373]">Vision</h3>
-              <p className="text-[#3a8fa3] font-semibold">02</p>
+              <p className="text-[#1f7189] font-semibold">02</p>
             </div>
             <hr className="my-3 border-black/20" />
             <p className="text-sm leading-relaxed font-medium text-[#2d5373]">
@@ -148,7 +148,7 @@ export default function Home() {
           <div className="background bg-[#FFF4D6] rounded-2xl border border-black/10 shadow-lg px-5 py-5 md:px-6 -rotate-1">
             <div className="flex justify-between items-center">
               <h3 className="text-left text-xl font-bold text-[#2d5373]">Mission</h3>
-              <p className="text-[#3a8fa3] font-semibold">03</p>
+              <p className="text-[#1f7189] font-semibold">03</p>
             </div>
             <hr className="my-3 border-black/20" />
 
@@ -188,7 +188,7 @@ export default function Home() {
           </div>
 
           <div className="logo-box flex-[2] text-center md:text-left">
-            <h3 className="text-2xl font-bold text-[#FFF4D6] md:text-3xl">Makna Logo Bahtera Gatra</h3>
+            <h2 className="text-2xl font-bold text-[#FFF4D6] md:text-3xl">Makna Logo Bahtera Gatra</h2>
             <br />
             <p className="text-sm leading-relaxed text-white/85">
               Merupakan sebuah kapal besar yang menampung banyak unsur, dimana unsur-unsur tersebut bersifat terikat dan saling bekerja sama supaya kapal tersebut dapat berjalan dengan optimal.
@@ -243,10 +243,10 @@ export default function Home() {
       {/* Nilai inti */}
       <div className="mx-6 mb-12 md:mx-10 md:mb-20 lg:mx-16">
         <div className="text-center mb-10">
-          <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#3a8fa3] mb-2">
+          <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#1f7189] mb-2">
             Core Values & Behaviors
           </p>
-          <h3 className="text-3xl font-bold text-[#2d5373] md:text-4xl">Nilai Inti Bahtera Gatra</h3>
+          <h2 className="text-3xl font-bold text-[#2d5373] md:text-4xl">Nilai Inti Bahtera Gatra</h2>
         </div>
 
         {/* HP 1 kolom, tablet 2 kolom, laptop 4 kolom */}
@@ -255,11 +255,11 @@ export default function Home() {
           {/* Card 1 */}
           <div className="bg-[#FFF4D6] border border-black/10 rounded-2xl p-6 flex flex-col">
             <div className="flex justify-between items-center mb-5">
-              <p className="text-2xl font-bold text-[#3a8fa3]">01</p>
+              <p className="text-2xl font-bold text-[#1f7189]">01</p>
               <p className="w-7 h-7 rounded-full bg-yellow-200 text-[#2d5373] text-xs flex items-center justify-center">★</p>
             </div>
             <h4 className="font-bold text-[#2d5373]">Sinergi Gatra (Clarity)</h4>
-            <p className="text-xs italic font-semibold text-orange-500 mt-2">{'"Clarity in Direction."'}</p>
+            <p className="text-xs italic font-semibold text-orange-700 mt-2">{'"Clarity in Direction."'}</p>
             <p className="text-xs leading-relaxed text-[#2d5373]/80 mt-3 flex-1">
               Pergerakan tanpa arah adalah energi yang terbuang. Kami memprioritaskan kejelasan tujuan, peran, dan proses pengambilan keputusan sebelum melangkah agar setiap program kerja terukur dan berdampak.
             </p>
@@ -269,11 +269,11 @@ export default function Home() {
           {/* Card 2 */}
           <div className="bg-[#FFF4D6] border border-black/10 rounded-2xl p-6 flex flex-col">
             <div className="flex justify-between items-center mb-5">
-              <p className="text-2xl font-bold text-[#3a8fa3]">02</p>
+              <p className="text-2xl font-bold text-[#1f7189]">02</p>
               <p className="w-7 h-7 rounded-full bg-yellow-200 text-[#2d5373] text-xs flex items-center justify-center">★</p>
             </div>
             <h4 className="font-bold text-[#2d5373]">Nakhoda Inovasi (Execution)</h4>
-            <p className="text-xs italic font-semibold text-orange-500 mt-2">{'"Responsible Execution."'}</p>
+            <p className="text-xs italic font-semibold text-orange-700 mt-2">{'"Responsible Execution."'}</p>
             <p className="text-xs leading-relaxed text-[#2d5373]/80 mt-3 flex-1">
               Keunggulan dibangun melalui konsistensi. Eksekusi yang bertanggung jawab berarti memegang standar profesionalisme tinggi dalam setiap layanan advokasi, akademik, dan pengembangan diri.
             </p>
@@ -283,11 +283,11 @@ export default function Home() {
           {/* Card 3 */}
           <div className="bg-[#FFF4D6] border border-black/10 rounded-2xl p-6 flex flex-col">
             <div className="flex justify-between items-center mb-5">
-              <p className="text-2xl font-bold text-[#3a8fa3]">03</p>
+              <p className="text-2xl font-bold text-[#1f7189]">03</p>
               <p className="w-7 h-7 rounded-full bg-yellow-200 text-[#2d5373] text-xs flex items-center justify-center">★</p>
             </div>
             <h4 className="font-bold text-[#2d5373]">Sauh Advokasi (Significance)</h4>
-            <p className="text-xs italic font-semibold text-orange-500 mt-2">{'"Meaningful Impact."'}</p>
+            <p className="text-xs italic font-semibold text-orange-700 mt-2">{'"Meaningful Impact."'}</p>
             <p className="text-xs leading-relaxed text-[#2d5373]/80 mt-3 flex-1">
               Kami menolak sekadar menjalankan rutinitas. Setiap program kerja yang dihadirkan harus menjawab kebutuhan riil mahasiswa Teknik Informatika dan meninggalkan jejak positif yang berkelanjutan.
             </p>
@@ -297,11 +297,11 @@ export default function Home() {
           {/* Card 4 */}
           <div className="bg-[#FFF4D6] border border-black/10 rounded-2xl p-6 flex flex-col">
             <div className="flex justify-between items-center mb-5">
-              <p className="text-2xl font-bold text-[#3a8fa3]">04</p>
+              <p className="text-2xl font-bold text-[#1f7189]">04</p>
               <p className="w-7 h-7 rounded-full bg-yellow-200 text-[#2d5373] text-xs flex items-center justify-center">★</p>
             </div>
             <h4 className="font-bold text-[#2d5373]">Layar Kolaborasi (Excellence)</h4>
-            <p className="text-xs italic font-semibold text-orange-500 mt-2">{'"Raise the Standard."'}</p>
+            <p className="text-xs italic font-semibold text-orange-700 mt-2">{'"Raise the Standard."'}</p>
             <p className="text-xs leading-relaxed text-[#2d5373]/80 mt-3 flex-1">
               Membangun ekosistem kolaboratif antara fungsionaris, mahasiswa, alumni, dan mitra industri untuk bersama-sama melampaui batas standar karya di kancah nasional maupun internasional.
             </p>
@@ -313,18 +313,18 @@ export default function Home() {
 
  {/* Latest News */}
 <div className="mx-6 mb-12 md:mx-10 md:mb-20 lg:mx-16">
-  <h1 className="text-4xl font-bold text-[#2d5373] md:text-5xl">
-    Latest <span className="text-[#3a8fa3]">News</span>
-  </h1>
+  <h2 className="text-4xl font-bold text-[#2d5373] md:text-5xl">
+    Latest <span className="text-[#1f7189]">News</span>
+  </h2>
 
   <div className="latest-container mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
     <div className="latest-box">
-      <p className="text-xs text-[#2d5373]/70 md:text-sm">
+      <p className="text-xs text-[#2d5373]/85 md:text-sm">
         Ikuti kabar kegiatan terbaru, program kerja dan prestasi mahasiswa Departemen Teknik Informatika.
       </p>
     </div>
     <div className="latest-box">
-      <Link href={"/news"} className="text-xs font-bold tracking-widest text-[#2d5373] hover:text-[#3a8fa3] transition-colors duration-300">
+      <Link href={"/news"} className="inline-flex min-h-11 items-center text-xs font-bold tracking-widest text-[#2d5373] hover:text-[#1f7189] transition-colors duration-300">
         VIEW ALL NEWS →
       </Link>
     </div>
@@ -339,7 +339,7 @@ export default function Home() {
         <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
         <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
       </div>
-      <p className="mt-4 text-xs text-[#2d5373]/70">17 Oktober 2026</p>
+      <p className="mt-4 text-xs text-[#2d5373]/85">17 Oktober 2026</p>
       <h4 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">INTRIVIA 2026 Sambut Mahasiswa Baru DTIF Melalui</h4>
       <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
         Malang — Departemen PSDM Bidang Humaniora sukses menyelenggarakan INTRIVIA (Informatics Introduction...
@@ -352,7 +352,7 @@ export default function Home() {
         <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">INFO</p>
         <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
       </div>
-      <p className="mt-4 text-xs text-[#2d5373]/70">11 Oktober 2026</p>
+      <p className="mt-4 text-xs text-[#2d5373]/85">11 Oktober 2026</p>
       <h4 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">EXTENDED! Open Recruitment Staff Muda HMDTIF Kabinet...</h4>
       <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
         Malang — Pendaftaran Staff Muda HMDTIF 2026 resmi diperpanjang pada 11–13 Oktober 2026. Segera lengkapi...
@@ -365,7 +365,7 @@ export default function Home() {
         <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
         <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
       </div>
-      <p className="mt-4 text-xs text-[#2d5373]/70">08 Oktober 2026</p>
+      <p className="mt-4 text-xs text-[#2d5373]/85">08 Oktober 2026</p>
       <h4 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">DISMIK KRS & Crisis Center KRS SA Hadir Dampingi...</h4>
       <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
         Departemen ADVOKESMA membuka posko CC KRS SA dan forum Diskusi Akademik KRS (DISMIK KRS) untuk...
@@ -378,7 +378,7 @@ export default function Home() {
         <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
         <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
       </div>
-      <p className="mt-4 text-xs text-[#2d5373]/70">04 Oktober 2026</p>
+      <p className="mt-4 text-xs text-[#2d5373]/85">04 Oktober 2026</p>
       <h4 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">INFORCE & MAGANG GO! 2026 Siapkan Karier Profesional...</h4>
       <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
         Malang — Divisi Widyantara Departemen PSDM mengakselerasi hardskill dan kesiapan karier mahasiswa...
@@ -388,11 +388,6 @@ export default function Home() {
   </div>
 
   
-  <div className="mt-8 flex items-center justify-center gap-4">
-    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-gray-400">‹</button>
-    <p className="text-xs font-bold text-[#2d5373]">Page 1 of 3</p>
-    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2e8aa3] text-white hover:bg-[#1e4d73] transition-colors duration-300">›</button>
-  </div>
 </div>
     </>
   );

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+<<<<<<< Updated upstream
 
 
 /* Hormati preferensi sistem: hentikan transisi dan animasi non-esensial. */
@@ -32,4 +33,10 @@
 
 .animate-shake {
   animation: shake-subtle 320ms ease-in-out 1;
+=======
+@theme {
+  --font-courier-prime: var(--font-courier-prime);
+  --font-space-grotesk: var(--font-space-grotesk);
+  --font-inter: var(--font-inter);
+>>>>>>> Stashed changes
 }

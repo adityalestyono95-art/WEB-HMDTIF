@@ -3,8 +3,121 @@
 import React, { useState } from "react";
 import DepartmentModal, { departments } from "./departments";
 
+// ── Font class helpers ────────────────────────────────────────────────────────
+const fCourier = "font-[family-name:var(--font-courier-prime)]";
+const fGrotesk  = "font-[family-name:var(--font-space-grotesk)]";
+const fInter    = "font-[family-name:var(--font-inter)]";
+
+// ── Asset constants ───────────────────────────────────────────────────────────
+const LOGO      = "/images/logo-hmdtif.png";   // placeholder – replace per dept later
+const LOGO_WIDE = "/images/logo-hmdtif.png";   // decorative corner img
+
+// ── Reusable sub-components ───────────────────────────────────────────────────
+
+/** ID-card style member card */
+function MemberCard({ role, name }: { role: string; name: string }) {
+  return (
+    <div
+      className="bg-[#EED9A4] w-[172px] p-2 rounded-[14px] border-2 border-solid border-[#D5BC7E]"
+      style={{ boxShadow: "0px 8px 24px #00000026" }}
+    >
+      <div className="flex flex-col items-center self-stretch bg-[#F4E3B8] py-[1px] rounded-[10px] border border-solid border-[#2F547040]">
+        <div className="flex flex-col items-center self-stretch bg-[#2F5470] py-2.5 mb-[75px] mx-[1px] border-b-2 border-solid border-b-[#FBC02D]">
+          <span className={`text-white text-[10px] font-bold uppercase ${fCourier}`}>{role}</span>
+        </div>
+        <div className="bg-[#1F3A4D40] w-10 h-[1px] mb-[99px]" />
+        <div className="flex flex-col self-stretch bg-[#E6CF96] py-[5px] px-[9px] mx-[1px] border-t border-solid border-t-[#1F3A4D26]">
+          <span className={`text-white text-[9px] font-bold text-center ${fCourier}`}>{name}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Ketua / wakadiv card for departments (taller) */
+function DivCard({ role, name }: { role: string; name: string }) {
+  return (
+    <div
+      className="bg-[#EED9A4] w-[172px] p-2 rounded-[14px] border-2 border-solid border-[#D5BC7E]"
+      style={{ boxShadow: "0px 8px 24px #00000026" }}
+    >
+      <div className="flex flex-col items-center self-stretch bg-[#F4E3B8] py-[1px] rounded-[10px] border border-solid border-[#2F547040]">
+        <div className="flex flex-col items-center self-stretch bg-[#2F5470] py-[9px] mb-[87px] mx-[1px] border-b-2 border-solid border-b-[#FBC02D]">
+          <span className={`text-white text-[10px] font-bold uppercase ${fCourier}`}>{role}</span>
+        </div>
+        <div className="bg-[#1F3A4D40] w-10 h-[1px] mb-[87px]" />
+        <div className="flex flex-col self-stretch bg-[#E6CF96] py-[5px] px-[9px] mx-[1px] border-t border-solid border-t-[#1F3A4D26]">
+          <span className={`text-white text-[9px] font-bold text-center ${fCourier}`}>{name}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Small wakadiv card below department panel */
+function WakadivCard({ name }: { name: string }) {
+  return (
+    <div className="w-[148px] pt-[72px]">
+      <div
+        className="self-stretch bg-[#EED9A4] p-2 rounded-[14px] border-2 border-solid border-[#D5BC7E]"
+        style={{ boxShadow: "0px 8px 24px #00000026" }}
+      >
+        <div className="flex flex-col items-center self-stretch bg-[#F4E3B8] py-[1px] rounded-[10px] border border-solid border-[#2F547040]">
+          <div className="flex flex-col items-center self-stretch bg-[#2F5470] py-[9px] mb-[71px] mx-[1px] border-b-2 border-solid border-b-[#FBC02D]">
+            <span className={`text-white text-[10px] font-bold ${fCourier}`}>wakadiv</span>
+          </div>
+          <div className="self-stretch bg-[#1F3A4D40] h-[1px] mb-[71px] mx-[46px]" />
+          <div className="flex flex-col items-center bg-[#E6CF96] py-[5px] border-t border-solid border-t-[#1F3A4D26]">
+            <span className={`text-white text-[9px] font-bold text-center w-[130px] ${fCourier}`}>{name}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Pill proker tag */
+function Tag({ label }: { label: string }) {
+  return (
+    <div className="flex flex-col shrink-0 items-start bg-[#FFFBF0] py-0.5 px-[11px] rounded-[9999px] border border-solid border-[#2F547040]">
+      <span className={`text-[#164A6E] text-[10px] ${fInter}`}>{label}</span>
+    </div>
+  );
+}
+
+/** "See Details & Fokus Kerja" button */
+function SeeDetailsBtn({ onClick, align = "left" }: { onClick: () => void; align?: "left" | "right" }) {
+  return (
+    <button
+      className={`flex items-center bg-[#E5CE96] text-left py-[11px] px-[21px] gap-2 rounded-[10px] border border-solid border-[#C8B072]${align === "right" ? " mr-[1px]" : ""}`}
+      style={{ boxShadow: "0px 1px 2px #0000000D" }}
+      onClick={onClick}
+    >
+      <span className={`text-[#1F3A4D] text-[13px] font-bold ${fCourier}`}>See Details &amp; Fokus Kerja</span>
+      <img src={LOGO} className="w-4 h-4 rounded-[10px] object-contain" alt="" />
+    </button>
+  );
+}
+
+// ── Dept card badge button (top pill) ────────────────────────────────────────
+function DeptBadge({ label, iconLeft, onClick }: { label: string; iconLeft?: boolean; onClick: () => void }) {
+  return (
+    <button
+      className="flex items-center bg-[#2F5470] text-left py-1.5 px-3.5 gap-2.5 rounded-xl border-0"
+      onClick={onClick}
+    >
+      {iconLeft && <img src={LOGO} className="w-5 h-5 rounded-xl object-contain" alt="" />}
+      <span className={`text-[#FFF4D6] text-xs font-bold ${fGrotesk}`}>{label}</span>
+      {!iconLeft && <img src={LOGO} className="w-5 h-5 rounded-xl object-contain" alt="" />}
+    </button>
+  );
+}
+
+// ── Main Page ─────────────────────────────────────────────────────────────────
+
 export default function CabinetPage() {
   const [openDept, setOpenDept] = useState<string | null>(null);
+<<<<<<< Updated upstream
 
   // Simpan tombol pemicu supaya fokus kembali ke sana saat dialog ditutup.
   const pemicu = React.useRef<HTMLElement | null>(null);
@@ -18,12 +131,14 @@ export default function CabinetPage() {
     pemicu.current?.focus();
   };
 
+=======
+>>>>>>> Stashed changes
   const activeDept = departments.find((d) => d.id === openDept) ?? null;
-  
+
   return (
     <div className="flex flex-col bg-white">
-      {/* ── Hero / Header ───────────────────────────────────── */}
       <div className="self-stretch bg-[#FFFBF0] pt-4">
+<<<<<<< Updated upstream
         {/* Title */}
         <div className="self-stretch h-16" />
         <div className="mb-16 self-stretch px-4 pt-10 md:mb-24 md:px-20">
@@ -33,50 +148,37 @@ export default function CabinetPage() {
               <span className="text-[#FBC02D] text-3xl font-bold md:text-[56px]">CABINET</span>
               <span className="text-[#1F3A4D] text-3xl font-bold md:text-[56px]"> STRUCTURE</span>
             </h1>
+=======
+
+        {/* ── Main content ── */}
+        <div className="self-stretch pt-10 px-20 mb-24 mx-11">
+
+          {/* Title */}
+          <div className="flex flex-col self-stretch gap-2">
+            <div className="flex justify-center items-center self-stretch">
+              <span className={`text-[#1F3A4D] text-[56px] font-bold mr-[17px] ${fGrotesk}`}>THE </span>
+              <span className={`text-[#FBC02D] text-[56px] font-bold ${fGrotesk}`}>CABINET</span>
+              <span className={`text-[#1F3A4D] text-[56px] font-bold ${fGrotesk}`}> STRUCTURE</span>
+            </div>
+>>>>>>> Stashed changes
             <div className="flex flex-col items-center self-stretch">
-              <span className="text-[#1F3A4D] text-[13px]">
+              <span className={`text-[#1F3A4D] text-[13px] ${fInter}`}>
                 Arahkan kursor atau klik pada kartu ID pengurus untuk melihat akun Instagram &amp; LinkedIn, atau klik See Details ↗ pada tiap departemen.
               </span>
             </div>
           </div>
 
-          {/* ── Org Chart Top (Ketua, Wakil, Sekretaris) ── */}
+          {/* ── Org Chart Top ── */}
           <div className="flex flex-col items-center self-stretch py-14">
-            {/* Ketua */}
-            <div
-              className="bg-[#EED9A4] w-[172px] p-2 mb-12 rounded-[14px] border-2 border-solid border-[#D5BC7E]"
-              style={{ boxShadow: "0px 8px 24px #00000026" }}
-            >
-              <div className="flex flex-col items-center self-stretch bg-[#F4E3B8] py-[1px] rounded-[10px] border border-solid border-[#2F547040]">
-                <div className="flex flex-col items-center self-stretch bg-[#2F5470] py-2.5 mb-[75px] mx-[1px] border-b-2 border-solid border-b-[#FBC02D]">
-                  <span className="text-white text-[10px] font-bold">ketua</span>
-                </div>
-                <div className="bg-[#1F3A4D40] w-10 h-[1px] mb-[99px]" />
-                <div className="flex flex-col self-stretch bg-[#E6CF96] py-[5px] px-[9px] mx-[1px] border-t border-solid border-t-[#1F3A4D26]">
-                  <span className="text-white text-[9px] font-bold text-center">bagas tif</span>
-                </div>
-              </div>
-            </div>
+            <MemberCard role="ketua" name="bagas tif" />
+            <div className="mb-12" />
 
-            {/* Wakil Ketua */}
-            <div
-              className="bg-[#EED9A4] w-[172px] p-2 mb-10 rounded-[14px] border-2 border-solid border-[#D5BC7E]"
-              style={{ boxShadow: "0px 8px 24px #00000026" }}
-            >
-              <div className="flex flex-col items-center self-stretch bg-[#F4E3B8] py-[1px] rounded-[10px] border border-solid border-[#2F547040]">
-                <div className="flex flex-col items-center self-stretch bg-[#2F5470] py-2.5 mb-[75px] mx-[1px] border-b-2 border-solid border-b-[#FBC02D]">
-                  <span className="text-white text-[10px] font-bold">wakil ketua</span>
-                </div>
-                <div className="bg-[#1F3A4D40] w-10 h-[1px] mb-[99px]" />
-                <div className="flex flex-col self-stretch bg-[#E6CF96] py-[5px] px-[9px] mx-[1px] border-t border-solid border-t-[#1F3A4D26]">
-                  <span className="text-white text-[9px] font-bold text-center">abI tekkom</span>
-                </div>
-              </div>
-            </div>
+            <MemberCard role="wakil ketua" name="abI tekkom" />
+            <div className="mb-10" />
 
-            {/* Dashed separator */}
             <div className="w-80 h-0.5 border-t-2 border-dashed border-t-[#FBC02D]" />
 
+<<<<<<< Updated upstream
             {/* Sekretaris 1 & 2 */}
             <div className="flex w-full max-w-[456px] justify-between items-start pt-4">
               {/* Sekretaris */}
@@ -110,10 +212,15 @@ export default function CabinetPage() {
                   </div>
                 </div>
               </div>
+=======
+            <div className="flex justify-between items-start w-[456px] pt-4">
+              <MemberCard role="sekretaris" name={"CUCUp\nTIF"} />
+              <MemberCard role="sekretaris 2" name={"yusup\nTIF"} />
+>>>>>>> Stashed changes
             </div>
           </div>
 
-          {/* ── Departemen List ───────────────────────────────── */}
+          {/* ── Department Sections ── */}
           <div className="self-stretch pb-[1px]">
 
             {/* ── INFOKOM ── */}
@@ -122,6 +229,7 @@ export default function CabinetPage() {
                 className="flex flex-col items-start self-stretch bg-[#FFF4D6] relative p-[38px] rounded-[18px] border-2 border-solid border-[#E2C887]"
                 style={{ boxShadow: "0px 10px 28px #1F3A4D12" }}
               >
+<<<<<<< Updated upstream
                 <img width={160} height={138}
                   src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/67918779-c655-4fbf-bd54-cf961227d130"
                   className="w-40 h-[138px] absolute bottom-0 right-[25px] object-fill"
@@ -161,26 +269,36 @@ export default function CabinetPage() {
                     <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-2.5" />
                     <div className="flex flex-col items-start self-stretch pt-1 mb-[9px]">
                       <span className="text-[#1f7189] text-xs font-bold">2 BIDANG • MEDIA KREATIF &amp; HUMAS</span>
+=======
+                <img src={LOGO_WIDE} className="w-40 h-[138px] absolute bottom-0 right-[25px] object-contain opacity-20" alt="" />
+                <div className="flex items-center self-stretch gap-8">
+                  <DivCard role="ketua divisi" name={"jeki\nTIF"} />
+                  <div className="flex flex-1 flex-col items-start">
+                    <div className="mb-2.5">
+                      <DeptBadge label="INFOKOM • HMDTIF 2026" iconLeft onClick={() => setOpenDept("infokom")} />
+                    </div>
+                    <div className="flex flex-col self-stretch py-[3px] mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[29px] font-bold whitespace-pre-line ${fCourier}`}>{"Departemen Informasi dan Komunikasi\n(INFOKOM)"}</span>
+                    </div>
+                    <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-2.5" />
+                    <div className="flex flex-col items-start self-stretch pt-1 mb-[9px]">
+                      <span className={`text-[#2E8FA6] text-xs font-bold ${fGrotesk}`}>2 BIDANG • MEDIA KREATIF &amp; HUMAS</span>
+>>>>>>> Stashed changes
                     </div>
                     <div className="flex flex-col self-stretch mb-[9px]">
-                      <span className="text-[#1F3A4D] text-[13px]">
-                        Departemen Informasi dan Komunikasi (INFOKOM) berperan sebagai penyedia dan pengelola informasi dari{"\n"}
-                        HMDTIF melalui pengumpulan, penyaringan, dan penyebaran informasi secara efektif kepada seluruh{"\n"}
-                        mahasiswa DTIF dan masyarakat umum, serta manajemen seluruh media sosial resmi HMDTIF.
+                      <span className={`text-[#1F3A4D] text-[13px] ${fInter}`}>
+                        Departemen Informasi dan Komunikasi (INFOKOM) berperan sebagai penyedia dan pengelola informasi dari HMDTIF melalui pengumpulan, penyaringan, dan penyebaran informasi secara efektif kepada seluruh mahasiswa DTIF dan masyarakat umum, serta manajemen seluruh media sosial resmi HMDTIF.
                       </span>
                     </div>
                     <div className="flex flex-col items-start self-stretch pt-1.5 mb-5 gap-[7px]">
                       <div className="flex items-center flex-wrap gap-1">
-                        {["Social Media Management", "ADA ADIT (Ada Apa Dengan IT)", "SILAT (Silaturahmi HMDTIF)", "KomaTitik Podcast"].map((tag) => (
-                          <div key={tag} className="flex flex-col shrink-0 items-start bg-[#FFFBF0] py-0.5 px-[11px] rounded-[9999px] border border-solid border-[#2F547040]">
-                            <span className="text-[#164A6E] text-[10px]">{tag}</span>
-                          </div>
-                        ))}
+                        {["Social Media Management", "ADA ADIT (Ada Apa Dengan IT)", "SILAT (Silaturahmi HMDTIF)", "KomaTitik Podcast"].map((t) => <Tag key={t} label={t} />)}
                       </div>
-                      <div className="flex flex-col items-start bg-[#FBC02D4D] py-[1px] px-2.5 rounded-[9999px]">
-                        <span className="text-[#1F3A4D] text-[10px] font-bold">+4 Proker Lainnya</span>
+                      <div className={`flex flex-col items-start bg-[#FBC02D4D] py-[1px] px-2.5 rounded-[9999px]`}>
+                        <span className={`text-[#1F3A4D] text-[10px] font-bold ${fInter}`}>+4 Proker Lainnya</span>
                       </div>
                     </div>
+<<<<<<< Updated upstream
                     <button
                       className="flex items-center bg-[#E5CE96] text-left py-[11px] px-[21px] gap-2 rounded-[10px] border border-solid border-[#C8B072]"
                       style={{ boxShadow: "0px 1px 2px #0000000D" }}
@@ -209,6 +327,15 @@ export default function CabinetPage() {
                     </div>
                   </div>
                 ))}
+=======
+                    <SeeDetailsBtn onClick={() => setOpenDept("infokom")} />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center items-center self-stretch pt-1 gap-16">
+                <WakadivCard name={"vior\ntekkom"} />
+                <WakadivCard name={"nurdin\ntekkom"} />
+>>>>>>> Stashed changes
               </div>
             </div>
 
@@ -218,6 +345,7 @@ export default function CabinetPage() {
                 className="flex flex-col items-start self-stretch bg-[#FFF4D6] relative p-[38px] rounded-[18px] border-2 border-solid border-[#E2C887]"
                 style={{ boxShadow: "0px 10px 28px #1F3A4D12" }}
               >
+<<<<<<< Updated upstream
                 <img width={160} height={138} src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/a992c820-2dd0-4047-897a-d377b19ca338" className="w-40 h-[138px] absolute bottom-[-1px] left-[26px] object-fill" alt="" />
                 <div className="flex flex-col items-start gap-4 self-stretch md:flex-row md:items-center md:gap-8">
                   <div className="w-full min-w-0 flex-1">
@@ -241,26 +369,47 @@ export default function CabinetPage() {
                         Departemen ADVOKESMA berperan sebagai pusat pelayanan untuk meningkatkan fungsi advokasi serta{"\n"}
                         kesejahteraan mahasiswa DTIF, menyediakan dukungan menyeluruh dalam aspek akademik maupun non-{"\n"}
                         akademik guna menciptakan lingkungan perkuliahan yang kondusif.
+=======
+                <img src={LOGO_WIDE} className="w-40 h-[138px] absolute bottom-[-1px] left-[26px] object-contain opacity-20" alt="" />
+                <div className="flex items-center self-stretch gap-8">
+                  <div className="flex-1">
+                    <div className="flex flex-col items-end self-stretch mb-2.5">
+                      <DeptBadge label="ADVOKESMA • HMDTIF 2026" onClick={() => setOpenDept("advokesma")} />
+                    </div>
+                    <div className="flex flex-col items-start self-stretch py-0.5 pl-9 mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[29px] font-bold text-right w-[644px] whitespace-pre-line ${fCourier}`}>{"Departemen Advokasi dan Kesejahteraan\nMahasiswa"}</span>
+                    </div>
+                    <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-[11px]" />
+                    <div className="flex flex-col items-end self-stretch pt-1 pr-[1px] mb-2.5">
+                      <span className={`text-[#2E8FA6] text-xs font-bold ${fGrotesk}`}>2 BIDANG • ADVOKASI &amp; KESEJAHTERAAN MAHASISWA</span>
+                    </div>
+                    <div className="flex flex-col items-start self-stretch pl-7 mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[13px] text-right w-[652px] ${fInter}`}>
+                        Departemen ADVOKESMA berperan sebagai pusat pelayanan untuk meningkatkan fungsi advokasi serta kesejahteraan mahasiswa DTIF, menyediakan dukungan menyeluruh dalam aspek akademik maupun non-akademik guna menciptakan lingkungan perkuliahan yang kondusif.
+>>>>>>> Stashed changes
                       </span>
                     </div>
                     <div className="flex flex-col items-end self-stretch py-[3px] mb-5 gap-1.5">
                       <div className="flex items-center flex-wrap gap-1 mr-[1px]">
-                        {["DISMIK KRS (Diskusi Akademik KRS)", "ACE (Academic Completion and Excellence)", "Echo Advo"].map((tag) => (
-                          <div key={tag} className="flex flex-col shrink-0 items-start bg-[#FFFBF0] py-0.5 px-[11px] rounded-[9999px] border border-solid border-[#2F547040]">
-                            <span className="text-[#164A6E] text-[10px]">{tag}</span>
-                          </div>
-                        ))}
+                        {["DISMIK KRS (Diskusi Akademik KRS)", "ACE (Academic Completion and Excellence)", "Echo Advo"].map((t) => <Tag key={t} label={t} />)}
                       </div>
                       <div className="flex items-center gap-1.5">
+<<<<<<< Updated upstream
                         <div className="flex flex-col shrink-0 items-start bg-[#FFFBF0] py-0.5 px-[11px] rounded-[9999px] border border-solid border-[#2F547040]">
                           <span className="text-[#164A6E] text-[10px]">CC KRS SA (Crisis Center KRS &amp; SA)</span>
                         </div>
                         <div className="flex flex-col items-start bg-[#FBC02D4D] py-0.5 px-2.5 rounded-[9999px]">
                           <span className="text-[#1F3A4D] text-[10px] font-bold">+4 Proker Lainnya</span>
+=======
+                        <Tag label="CC KRS SA (Crisis Center KRS &amp; SA)" />
+                        <div className="flex flex-col shrink-0 items-start bg-[#FBC02D4D] py-0.5 px-2.5 rounded-[9999px]">
+                          <span className={`text-[#1F3A4D] text-[10px] font-bold ${fInter}`}>+4 Proker Lainnya</span>
+>>>>>>> Stashed changes
                         </div>
                       </div>
                     </div>
                     <div className="flex flex-col items-end self-stretch">
+<<<<<<< Updated upstream
                       <button
                         className="flex items-center bg-[#E5CE96] text-left py-[11px] px-[21px] mr-[1px] gap-2 rounded-[10px] border border-solid border-[#C8B072]"
                         style={{ boxShadow: "0px 1px 2px #0000000D" }}
@@ -281,10 +430,15 @@ export default function CabinetPage() {
                       <div className="flex flex-col self-stretch bg-[#E6CF96] py-[5px] px-[9px] mx-[1px] border-t border-solid border-t-[#1F3A4D26]">
                         <span className="text-white text-[9px] font-bold text-center">mikael{"\n"}tekkom</span>
                       </div>
+=======
+                      <SeeDetailsBtn onClick={() => setOpenDept("advokesma")} align="right" />
+>>>>>>> Stashed changes
                     </div>
                   </div>
+                  <DivCard role="ketua divisi" name={"mikael\ntekkom"} />
                 </div>
               </div>
+<<<<<<< Updated upstream
               {/* Wakadiv ADVOKESMA */}
               <div className="flex flex-wrap justify-center items-center self-stretch pt-1 gap-4 md:gap-16">
                 {["lebron\ntekkom", "kobe tif"].map((name) => (
@@ -302,6 +456,11 @@ export default function CabinetPage() {
                     </div>
                   </div>
                 ))}
+=======
+              <div className="flex justify-center items-center self-stretch pt-1 gap-16">
+                <WakadivCard name={"lebron\ntekkom"} />
+                <WakadivCard name="kobe tif" />
+>>>>>>> Stashed changes
               </div>
             </div>
 
@@ -311,6 +470,7 @@ export default function CabinetPage() {
                 className="flex flex-col items-start self-stretch bg-[#FFF4D6] relative p-[38px] rounded-[18px] border-2 border-solid border-[#E2C887]"
                 style={{ boxShadow: "0px 10px 28px #1F3A4D12" }}
               >
+<<<<<<< Updated upstream
                 <img width={160} height={138} src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/dc46aac8-50b7-4203-bd5f-75430f04fa42" className="w-40 h-[138px] absolute bottom-0 right-[25px] object-fill" alt="" />
                 <div className="flex flex-col items-start gap-4 self-stretch md:flex-row md:items-center md:gap-8">
                   <div className="bg-[#EED9A4] w-[172px] p-2 rounded-[14px] border-2 border-solid border-[#D5BC7E]" style={{ boxShadow: "0px 8px 24px #00000026" }}>
@@ -337,23 +497,33 @@ export default function CabinetPage() {
                     <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-2.5" />
                     <div className="flex flex-col items-start self-stretch pt-1 mb-[9px]">
                       <span className="text-[#1f7189] text-xs font-bold">2 DIVISI • DIVISI HUMANIORA &amp; DIVISI WIDYANTARA</span>
+=======
+                <img src={LOGO_WIDE} className="w-40 h-[138px] absolute bottom-0 right-[25px] object-contain opacity-20" alt="" />
+                <div className="flex items-center self-stretch gap-8">
+                  <DivCard role="ketua divisi" name={"jordan\ntif"} />
+                  <div className="flex flex-1 flex-col items-start">
+                    <div className="mb-2.5">
+                      <DeptBadge label="PSDM • HMDTIF 2026" iconLeft onClick={() => setOpenDept("psdm")} />
+                    </div>
+                    <div className="flex flex-col self-stretch py-[3px] mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[29px] font-bold whitespace-pre-line ${fCourier}`}>{"Departemen Pengembangan Sumber Daya\nMahasiswa"}</span>
+                    </div>
+                    <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-2.5" />
+                    <div className="flex flex-col items-start self-stretch pt-1 mb-[9px]">
+                      <span className={`text-[#2E8FA6] text-xs font-bold ${fGrotesk}`}>2 DIVISI • DIVISI HUMANIORA &amp; DIVISI WIDYANTARA</span>
+>>>>>>> Stashed changes
                     </div>
                     <div className="flex flex-col self-stretch mb-[9px]">
-                      <span className="text-[#1F3A4D] text-[13px]">
-                        Departemen PSDM berfungsi sebagai sentra akselerasi kompetensi anggota HMDTIF yang berfokus pada{"\n"}
-                        pembentukan karakter kepemimpinan serta peningkatan hardskill dan softskill melalui integrasi Divisi{"\n"}
-                        Humaniora dan Divisi Widyantara guna mencetak SDM berdaya saing tinggi.
+                      <span className={`text-[#1F3A4D] text-[13px] ${fInter}`}>
+                        Departemen PSDM berfungsi sebagai sentra akselerasi kompetensi anggota HMDTIF yang berfokus pada pembentukan karakter kepemimpinan serta peningkatan hardskill dan softskill melalui integrasi Divisi Humaniora dan Divisi Widyantara guna mencetak SDM berdaya saing tinggi.
                       </span>
                     </div>
                     <div className="flex flex-col items-start self-stretch pt-1.5 mb-5 gap-[7px]">
                       <div className="flex items-center flex-wrap gap-1">
-                        {["ASA (Assemble Study Association)", "MAGANG GO!", "INFORCE (Informatics Career Excellence)"].map((tag) => (
-                          <div key={tag} className="flex flex-col shrink-0 items-start bg-[#FFFBF0] py-0.5 px-[11px] rounded-[9999px] border border-solid border-[#2F547040]">
-                            <span className="text-[#164A6E] text-[10px]">{tag}</span>
-                          </div>
-                        ))}
+                        {["ASA (Assemble Study Association)", "MAGANG GO!", "INFORCE (Informatics Career Excellence)"].map((t) => <Tag key={t} label={t} />)}
                       </div>
                       <div className="flex items-center gap-1.5">
+<<<<<<< Updated upstream
                         <div className="flex flex-col shrink-0 items-start bg-[#FFFBF0] py-0.5 px-[11px] rounded-[9999px] border border-solid border-[#2F547040]">
                           <span className="text-[#164A6E] text-[10px]">TEKRA (Technology &amp; Creativity Arena)</span>
                         </div>
@@ -389,6 +559,21 @@ export default function CabinetPage() {
                     </div>
                   </div>
                 ))}
+=======
+                        <Tag label="TEKRA (Technology &amp; Creativity Arena)" />
+                        <div className="flex flex-col shrink-0 items-start bg-[#FBC02D4D] py-0.5 px-2.5 rounded-[9999px]">
+                          <span className={`text-[#1F3A4D] text-[10px] font-bold ${fInter}`}>+4 Proker Lainnya</span>
+                        </div>
+                      </div>
+                    </div>
+                    <SeeDetailsBtn onClick={() => setOpenDept("psdm")} />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center items-center self-stretch pt-1 gap-16">
+                <WakadivCard name={"adam\ntekkom"} />
+                <WakadivCard name={"sigit\ntekkom"} />
+>>>>>>> Stashed changes
               </div>
             </div>
 
@@ -398,6 +583,7 @@ export default function CabinetPage() {
                 className="flex flex-col items-start self-stretch bg-[#FFF4D6] relative p-[38px] rounded-[18px] border-2 border-solid border-[#E2C887]"
                 style={{ boxShadow: "0px 10px 28px #1F3A4D12" }}
               >
+<<<<<<< Updated upstream
                 <img width={160} height={138} src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/909b86dc-97b5-4909-9127-beb87a3727a0" className="w-40 h-[138px] absolute bottom-[-1px] left-[26px] object-fill" alt="" />
                 <div className="flex flex-col items-start gap-4 self-stretch md:flex-row md:items-center md:gap-8">
                   <div className="w-full min-w-0 flex-1">
@@ -421,16 +607,31 @@ export default function CabinetPage() {
                         Departemen Bisnis berfungsi sebagai sentra strategis pengembangan kompetensi kewirausahaan{"\n"}
                         (entrepreneurship) bagi mahasiswa Teknik Informatika, yang mengintegrasikan fungsi fundraising organisasi{"\n"}
                         dengan edukasi manajemen bisnis serta perluasan jejaring kemitraan.
+=======
+                <img src={LOGO_WIDE} className="w-40 h-[138px] absolute bottom-[-1px] left-[26px] object-contain opacity-20" alt="" />
+                <div className="flex items-center self-stretch gap-8">
+                  <div className="flex-1">
+                    <div className="flex flex-col items-end self-stretch mb-2.5">
+                      <DeptBadge label="BISNIS • HMDTIF 2026" onClick={() => setOpenDept("bisnis")} />
+                    </div>
+                    <div className="flex flex-col items-start self-stretch py-0.5 pl-9 mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[29px] font-bold text-right w-[644px] whitespace-pre-line ${fCourier}`}>{"Departemen Bisnis (Entrepreneurship &\nPartnership)"}</span>
+                    </div>
+                    <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-[11px]" />
+                    <div className="flex flex-col items-end self-stretch pt-1 pr-[1px] mb-2.5">
+                      <span className={`text-[#2E8FA6] text-xs font-bold ${fGrotesk}`}>ENTREPRENEURSHIP • FUNDRAISING &amp; SPONSORSHIP</span>
+                    </div>
+                    <div className="flex flex-col items-start self-stretch pl-[13px] mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[13px] text-right w-[667px] ${fInter}`}>
+                        Departemen Bisnis berfungsi sebagai sentra strategis pengembangan kompetensi kewirausahaan (entrepreneurship) bagi mahasiswa Teknik Informatika, yang mengintegrasikan fungsi fundraising organisasi dengan edukasi manajemen bisnis serta perluasan jejaring kemitraan.
+>>>>>>> Stashed changes
                       </span>
                     </div>
                     <div className="flex justify-end items-center self-stretch py-1.5 mb-5 gap-1.5">
-                      {["Warung Informatika", "HMDTIF Wear", "Informatics Partnership and Sponsorship"].map((tag) => (
-                        <div key={tag} className="flex flex-col shrink-0 items-start bg-[#FFFBF0] py-[3px] px-[11px] rounded-[9999px] border border-solid border-[#2F547040]">
-                          <span className="text-[#164A6E] text-[10px]">{tag}</span>
-                        </div>
-                      ))}
+                      {["Warung Informatika", "HMDTIF Wear", "Informatics Partnership and Sponsorship"].map((t) => <Tag key={t} label={t} />)}
                     </div>
                     <div className="flex flex-col items-end self-stretch">
+<<<<<<< Updated upstream
                       <button
                         className="flex items-center bg-[#E5CE96] text-left py-[11px] px-[21px] mr-[1px] gap-2 rounded-[10px] border border-solid border-[#C8B072]"
                         style={{ boxShadow: "0px 1px 2px #0000000D" }}
@@ -450,10 +651,15 @@ export default function CabinetPage() {
                       <div className="flex flex-col self-stretch bg-[#E6CF96] py-[5px] px-[9px] mx-[1px] border-t border-solid border-t-[#1F3A4D26]">
                         <span className="text-white text-[9px] font-bold text-center">aldo{"\n"}tekkom</span>
                       </div>
+=======
+                      <SeeDetailsBtn onClick={() => setOpenDept("bisnis")} align="right" />
+>>>>>>> Stashed changes
                     </div>
                   </div>
+                  <DivCard role="ketua divisi" name={"aldo\ntekkom"} />
                 </div>
               </div>
+<<<<<<< Updated upstream
               <div className="flex flex-wrap justify-center items-center self-stretch pt-1 gap-4 md:gap-16">
                 {["zahra\ntif", "akup\ntekkom"].map((name) => (
                   <div key={name} className="w-[148px] pt-[72px]">
@@ -470,6 +676,11 @@ export default function CabinetPage() {
                     </div>
                   </div>
                 ))}
+=======
+              <div className="flex justify-center items-center self-stretch pt-1 gap-16">
+                <WakadivCard name={"zahra\ntif"} />
+                <WakadivCard name={"akup\ntekkom"} />
+>>>>>>> Stashed changes
               </div>
             </div>
 
@@ -479,6 +690,7 @@ export default function CabinetPage() {
                 className="flex flex-col items-start self-stretch bg-[#FFF4D6] relative p-[38px] rounded-[18px] border-2 border-solid border-[#E2C887]"
                 style={{ boxShadow: "0px 10px 28px #1F3A4D12" }}
               >
+<<<<<<< Updated upstream
                 <img width={160} height={138} src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/865b45f1-3c33-4ec1-bb21-a15744af7440" className="w-40 h-[138px] absolute bottom-0 right-[25px] object-fill" alt="" />
                 <div className="flex flex-col items-start gap-4 self-stretch md:flex-row md:items-center md:gap-8">
                   <div className="bg-[#EED9A4] w-[172px] p-2 rounded-[14px] border-2 border-solid border-[#D5BC7E]" style={{ boxShadow: "0px 8px 24px #00000026" }}>
@@ -505,17 +717,31 @@ export default function CabinetPage() {
                     <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-2.5" />
                     <div className="flex flex-col items-start self-stretch pt-1 mb-[9px]">
                       <span className="text-[#1f7189] text-xs font-bold">AGILE SDLC • INFORMATION SYSTEMS &amp; DIGITAL PLATFORM</span>
+=======
+                <img src={LOGO_WIDE} className="w-40 h-[138px] absolute bottom-0 right-[25px] object-contain opacity-20" alt="" />
+                <div className="flex items-center self-stretch gap-8">
+                  <DivCard role="ketua divisi" name={"morant\ntekkom"} />
+                  <div className="flex flex-1 flex-col items-start">
+                    <div className="mb-2.5">
+                      <DeptBadge label="PIT • HMDTIF 2026" iconLeft onClick={() => setOpenDept("pit")} />
+                    </div>
+                    <div className="flex flex-col self-stretch py-[3px] mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[29px] font-bold whitespace-pre-line ${fCourier}`}>{"Departemen Pengembangan Informasi dan\nTeknologi (PIT)"}</span>
+                    </div>
+                    <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-2.5" />
+                    <div className="flex flex-col items-start self-stretch pt-1 mb-[9px]">
+                      <span className={`text-[#2E8FA6] text-xs font-bold ${fGrotesk}`}>AGILE SDLC • INFORMATION SYSTEMS &amp; DIGITAL PLATFORM</span>
+>>>>>>> Stashed changes
                     </div>
                     <div className="flex flex-col self-stretch mb-[15px]">
-                      <span className="text-[#1F3A4D] text-[13px]">
-                        Pengembangan Informasi dan Teknologi (PIT) bertanggung jawab atas pengembangan sistem informasi,{"\n"}
-                        teknologi, dan media digital guna mendukung kegiatan serta kebutuhan HMDTIF dengan menerapkan{"\n"}
-                        pendekatan Software Development Life Cycle (SDLC) berbasis Agile yang iteratif dan fleksibel.
+                      <span className={`text-[#1F3A4D] text-[13px] ${fInter}`}>
+                        Pengembangan Informasi dan Teknologi (PIT) bertanggung jawab atas pengembangan sistem informasi, teknologi, dan media digital guna mendukung kegiatan serta kebutuhan HMDTIF dengan menerapkan pendekatan Software Development Life Cycle (SDLC) berbasis Agile yang iteratif dan fleksibel.
                       </span>
                     </div>
-                    <div className="flex flex-col items-start bg-[#FFFBF0] py-0.5 px-[11px] mb-5 rounded-[9999px] border border-solid border-[#2F547040]">
-                      <span className="text-[#164A6E] text-[10px]">Pemeliharaan dan Optimalisasi Website (hmdtif.filkom.ub.ac.id)</span>
+                    <div className="mb-5">
+                      <Tag label="Pemeliharaan dan Optimalisasi Website (hmdtif.filkom.ub.ac.id)" />
                     </div>
+<<<<<<< Updated upstream
                     <button
                       className="flex items-center bg-[#E5CE96] text-left py-[11px] px-[21px] gap-2 rounded-[10px] border border-solid border-[#C8B072]"
                       style={{ boxShadow: "0px 1px 2px #0000000D" }}
@@ -543,6 +769,15 @@ export default function CabinetPage() {
                     </div>
                   </div>
                 ))}
+=======
+                    <SeeDetailsBtn onClick={() => setOpenDept("pit")} />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center items-center self-stretch pt-1 gap-16">
+                <WakadivCard name={"irving\ntif"} />
+                <WakadivCard name={"kevint\ntekkom"} />
+>>>>>>> Stashed changes
               </div>
             </div>
 
@@ -552,6 +787,7 @@ export default function CabinetPage() {
                 className="flex flex-col items-start self-stretch bg-[#FFF4D6] relative p-[38px] rounded-[18px] border-2 border-solid border-[#E2C887]"
                 style={{ boxShadow: "0px 10px 28px #1F3A4D12" }}
               >
+<<<<<<< Updated upstream
                 <img width={160} height={138} src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/5b9600f4-f0f3-4e08-856c-3a700cd89d7c" className="w-40 h-[138px] absolute bottom-[-1px] left-[26px] object-fill" alt="" />
                 <div className="flex flex-col items-start gap-4 self-stretch md:flex-row md:items-center md:gap-8">
                   <div className="w-full min-w-0 flex-1">
@@ -575,16 +811,31 @@ export default function CabinetPage() {
                         Senat HMDTIF merupakan lembaga legislatif yang berperan strategis dalam memastikan arah gerak dan{"\n"}
                         kualitas tata kelola organisasi, menjadi wadah mahasiswa untuk terlibat langsung dalam pengambilan{"\n"}
                         keputusan, penghimpunan aspirasi, pengawasan program kerja, serta perumusan AD/ART dan GBHK.
+=======
+                <img src={LOGO_WIDE} className="w-40 h-[138px] absolute bottom-[-1px] left-[26px] object-contain opacity-20" alt="" />
+                <div className="flex items-center self-stretch gap-8">
+                  <div className="flex-1">
+                    <div className="flex flex-col items-end self-stretch mb-2.5">
+                      <DeptBadge label="SENAT • HMDTIF 2026" onClick={() => setOpenDept("senat")} />
+                    </div>
+                    <div className="flex flex-col items-end self-stretch py-0.5 mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[29px] font-bold text-right w-[557px] whitespace-pre-line ${fCourier}`}>{"Senat HMDTIF (Lembaga Legislatif\nMahasiswa)"}</span>
+                    </div>
+                    <div className="self-stretch bg-[#1F3A4D57] h-[1px] mb-[11px]" />
+                    <div className="flex flex-col items-end self-stretch pt-1 pr-[1px] mb-2.5">
+                      <span className={`text-[#2E8FA6] text-xs font-bold ${fGrotesk}`}>LEGISLATIF • KONSTITUSI, ASPIRASI &amp; PENGAWASAN</span>
+                    </div>
+                    <div className="flex flex-col items-start self-stretch pl-[38px] mb-2.5">
+                      <span className={`text-[#1F3A4D] text-[13px] text-right w-[642px] ${fInter}`}>
+                        Senat HMDTIF merupakan lembaga legislatif yang berperan strategis dalam memastikan arah gerak dan kualitas tata kelola organisasi, menjadi wadah mahasiswa untuk terlibat langsung dalam pengambilan keputusan, penghimpunan aspirasi, pengawasan program kerja, serta perumusan AD/ART dan GBHK.
+>>>>>>> Stashed changes
                       </span>
                     </div>
                     <div className="flex justify-end items-center self-stretch py-1.5 mb-5 gap-1.5">
-                      {["Musyawarah HMDTIF", "Evaluasi Triwulan", "Rapat Besar"].map((tag) => (
-                        <div key={tag} className="flex flex-col shrink-0 items-start bg-[#FFFBF0] py-[3px] px-[11px] rounded-[9999px] border border-solid border-[#2F547040]">
-                          <span className="text-[#164A6E] text-[10px]">{tag}</span>
-                        </div>
-                      ))}
+                      {["Musyawarah HMDTIF", "Evaluasi Triwulan", "Rapat Besar"].map((t) => <Tag key={t} label={t} />)}
                     </div>
                     <div className="flex flex-col items-end self-stretch">
+<<<<<<< Updated upstream
                       <button
                         className="flex items-center bg-[#E5CE96] text-left py-[11px] px-[21px] mr-[1px] gap-2 rounded-[10px] border border-solid border-[#C8B072]"
                         style={{ boxShadow: "0px 1px 2px #0000000D" }}
@@ -604,10 +855,15 @@ export default function CabinetPage() {
                       <div className="flex flex-col self-stretch bg-[#E6CF96] py-[5px] px-[9px] mx-[1px] border-t border-solid border-t-[#1F3A4D26]">
                         <span className="text-white text-[9px] font-bold text-center">devin{"\n"}tif</span>
                       </div>
+=======
+                      <SeeDetailsBtn onClick={() => setOpenDept("senat")} align="right" />
+>>>>>>> Stashed changes
                     </div>
                   </div>
+                  <DivCard role="ketua divisi" name={"devin\ntif"} />
                 </div>
               </div>
+<<<<<<< Updated upstream
               <div className="flex flex-wrap justify-center items-center self-stretch pt-1 gap-4 md:gap-16">
                 {["johnson\ntif", "russel\ntekkom"].map((name) => (
                   <div key={name} className="w-[148px] pt-[72px]">
@@ -624,16 +880,22 @@ export default function CabinetPage() {
                     </div>
                   </div>
                 ))}
+=======
+              <div className="flex justify-center items-center self-stretch pt-1 gap-16">
+                <WakadivCard name={"johnson\ntif"} />
+                <WakadivCard name={"russel\ntekkom"} />
+>>>>>>> Stashed changes
               </div>
             </div>
 
           </div>
         </div>
+
       </div>
 
-      {/* ── Department Modal Overlay ── */}
+      {/* ── Department Modal ── */}
       {activeDept && (
-        <DepartmentModal department={activeDept} onClose={closeModal} />
+        <DepartmentModal department={activeDept} onClose={() => setOpenDept(null)} />
       )}
     </div>
   );

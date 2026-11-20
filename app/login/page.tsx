@@ -1,14 +1,23 @@
-'use client'
+"use client";
 
+<<<<<<< Updated upstream
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react'
+=======
+import { useState } from "react";
+import Link from "next/link";
+>>>>>>> Stashed changes
 
-export default function Page() {
-  const router = useRouter()
+export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+<<<<<<< Updated upstream
  
   const [email, setEmail] = useState("")
   const [sandi, setSandi] = useState("")
@@ -64,34 +73,78 @@ export default function Page() {
 
     setLoading(false)
   }
+=======
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle login logic here
+    console.log("Login:", { email, password, rememberMe });
+  };
+>>>>>>> Stashed changes
 
   return (
-    <div className="container-login grid min-h-screen grid-cols-1 md:grid-cols-2">
-
-      {/* Panel kiri, hanya tampil di tablet ke atas */}
-      <div className="login-box hidden flex-col justify-between bg-gradient-to-b from-[#1e4d73] to-[#436a87] px-10 py-10 md:flex lg:px-14">
-        <div>
-          <h3 className="text-xl font-bold tracking-wider text-[#FFF4D6]">HMDTIF</h3>
-          <p className="mt-1 text-[10px] font-semibold tracking-widest text-yellow-400">BAHTERA GATRA 2026</p>
+    <div className="flex min-h-screen">
+      {/* Left Side - Brand Identity */}
+      <div className="relative w-[630px] bg-gradient-to-br from-[#164A6E] via-[#2F5470] to-[#456B85] flex flex-col justify-between p-[52px] text-white overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-[0.09]">
+          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <pattern id="gridLogin" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5"/>
+            </pattern>
+            <rect width="100" height="100" fill="url(#gridLogin)" />
+          </svg>
         </div>
 
-        <div className="flex flex-col items-center">
-          <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={160} height={160} />
-        </div>
-
-        <div>
-          <h2 className="text-4xl font-bold leading-tight text-[#FFF4D6] lg:text-5xl">Satu bahtera.</h2>
-          <h2 className="text-4xl font-bold leading-tight text-[#FFF4D6] lg:text-5xl">Tumbuh bersama.</h2>
-          <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/80">
-            Ruang untuk terhubung, berkolaborasi, dan bertumbuh bersama keluarga Teknik Informatika.
+        <div className="relative z-10">
+          {/* Logo & Name */}
+          <h1 className="text-[#FFF4D6] text-[25px] leading-8 font-bold font-[family-name:var(--font-space-grotesk)] mb-1">
+            HMDTIF FILKOM UB
+          </h1>
+          <p className="text-[#F6D977] text-[11px] leading-[18px] tracking-[2px] font-medium font-[family-name:var(--font-space-grotesk)]">
+            KABINET BAHTERA GATRA 2026
           </p>
-          <hr className="mt-8 w-12 border-t-2 border-yellow-300" />
-          <p className="mt-4 text-sm font-bold text-[#FFF4D6]">Tumbuh Bersama, Satukan Gatra!</p>
-          <p className="mt-10 text-[11px] leading-relaxed text-white/70">Himpunan Mahasiswa Departemen Teknik Informatika</p>
-          <p className="text-[11px] leading-relaxed text-white/70">FILKOM Universitas Brawijaya</p>
+        </div>
+
+        {/* Center Content */}
+        <div className="relative z-10 flex flex-col items-center justify-center -mt-20">
+          {/* Logo Bahtera */}
+          <div className="w-[167.4px] h-[220.97px] mb-16">
+            <img 
+              src="/images/logo-hmdtif.png" 
+              alt="Logo Bahtera Gatra" 
+              className="w-full h-full object-contain drop-shadow-[0_0_56px_rgba(102,255,255,0.38)]"
+            />
+          </div>
+
+          {/* Main Heading */}
+          <h2 className="text-[#FFF4D6] text-5xl leading-[55px] font-bold tracking-[-1.4px] text-center mb-8 max-w-[520px] font-[family-name:var(--font-space-grotesk)]">
+            Berlayar Bersama Satukan Gatra
+          </h2>
+
+          {/* Description */}
+          <p className="text-[#E3EDF0] text-[15px] leading-[26px] text-center max-w-[510px] mb-12">
+            Himpunan Mahasiswa Departemen Teknik Informatika yang berkomitmen membangun komunitas solid, suportif, dan profesional.
+          </p>
+
+          {/* Accent Line */}
+          <div className="w-11 h-[3px] bg-[#F6D977] mb-6"></div>
+
+          {/* Slogan */}
+          <p className="text-[#FFF4D6] text-lg leading-[26px] font-bold mb-8 font-[family-name:var(--font-space-grotesk)]">
+            #BerlayarBersamaSatukanGatra
+          </p>
+        </div>
+
+        {/* Footer Info */}
+        <div className="relative z-10">
+          <p className="text-[#D6E3E8] text-xs leading-5 max-w-[510px]">
+            Gedung Kreativitas Mahasiswa, Fakultas Ilmu Komputer<br />
+            Universitas Brawijaya, Jl. Veteran No. 8, Lowokwaru, Malang
+          </p>
         </div>
       </div>
 
+<<<<<<< Updated upstream
       {/* Panel kanan */}
       <div className="login-box flex flex-col bg-[#FFFBF0] px-6 py-8 md:px-10">
         <Link href={"/"} className="flex min-h-11 items-center gap-2 text-xs font-semibold text-[#2d5373] hover:text-[#1f7189] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f7189]">
@@ -194,7 +247,132 @@ export default function Page() {
         </div>
 
         <p className="text-center text-[11px] text-[#2d5373]/85">© 2026 HMDTIF FILKOM UB · Bahtera Gatra</p>
+=======
+      {/* Right Side - Login Form */}
+      <div className="flex-1 bg-[#FFFBF0] flex flex-col">
+        {/* Back Button */}
+        <div className="p-[46px] pb-0">
+          <Link 
+            href="/" 
+            className="text-[#2F5470] text-[13px] leading-[22px] font-medium hover:underline inline-flex items-center gap-2"
+          >
+            <span>←</span> Kembali ke beranda
+          </Link>
+        </div>
+
+        {/* Form Container */}
+        <div className="flex-1 flex items-center justify-center px-6">
+          <div className="w-full max-w-[420px]">
+            {/* Form Header */}
+            <div className="mb-8">
+              <p className="text-[#2F5470] text-[11px] leading-[18px] tracking-[1.8px] uppercase font-bold mb-3 font-[family-name:var(--font-space-grotesk)]">
+                PORTAL FUNGSIONARIS
+              </p>
+              <h1 className="text-[#1F3A4D] text-[33px] leading-[43px] font-bold mb-4 font-[family-name:var(--font-space-grotesk)]">
+                Masuk ke Akun Anda
+              </h1>
+              <p className="text-[#59696E] text-sm leading-[23px]">
+                Gunakan email dan kata sandi yang telah terdaftar untuk mengakses portal internal HMDTIF.
+              </p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              {/* Email Field */}
+              <div className="flex flex-col gap-[10px]">
+                <label htmlFor="email" className="text-[#1F3A4D] text-[13px] leading-5 font-medium">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="nama.lengkap@student.ub.ac.id"
+                  className="w-full h-[52px] px-4 bg-[#FFFDF7] border border-[#CFCFBD] rounded-lg text-sm text-[#1F3A4D] placeholder:text-[#59696E] focus:outline-none focus:border-[#2F5470] focus:ring-1 focus:ring-[#2F5470]"
+                  required
+                />
+              </div>
+
+              {/* Password Field */}
+              <div className="flex flex-col gap-[10px]">
+                <label htmlFor="password" className="text-[#1F3A4D] text-[13px] leading-5 font-medium">
+                  Kata Sandi
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Masukkan kata sandi Anda"
+                    className="w-full h-[52px] px-4 pr-24 bg-[#FFFDF7] border border-[#CFCFBD] rounded-lg text-sm text-[#1F3A4D] placeholder:text-[#59696E] focus:outline-none focus:border-[#2F5470] focus:ring-1 focus:ring-[#2F5470]"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#2F5470] text-xs leading-[22px] font-medium hover:underline"
+                  >
+                    {showPassword ? "Sembunyikan" : "Tampilkan"}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 border border-[#59696E] rounded accent-[#2F5470] cursor-pointer"
+                  />
+                  <span className="text-[#59696E] text-[13px] leading-[22px]">
+                    Ingat saya
+                  </span>
+                </label>
+                <Link 
+                  href="/forgot-password" 
+                  className="text-[#2F5470] text-[13px] leading-[22px] font-semibold hover:underline"
+                >
+                  Lupa kata sandi?
+                </Link>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full h-[52px] bg-[#2F5470] hover:bg-[#264159] text-[#FFF4D6] text-[15px] leading-[22px] font-bold rounded-lg flex items-center justify-center gap-2 transition-colors font-[family-name:var(--font-space-grotesk)] group"
+              >
+                Masuk
+                <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+
+              {/* Help Text */}
+              <div className="text-center pt-4">
+                <p className="text-[#59696E] text-xs leading-[21px] mb-1">
+                  Tidak bisa masuk atau lupa kredensial?
+                </p>
+                <Link 
+                  href="mailto:hmdtif@ub.ac.id" 
+                  className="text-[#2F5470] text-[13px] leading-[22px] font-semibold hover:underline"
+                >
+                  Hubungi admin HMDTIF
+                </Link>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="p-6 text-center">
+          <p className="text-[#59696E] text-[11px] leading-[18px]">
+            © 2026 HMDTIF FILKOM UB — Kabinet Bahtera Gatra. Made with ♥ by Departemen PIT.
+          </p>
+        </div>
+>>>>>>> Stashed changes
       </div>
     </div>
-  )
+  );
 }

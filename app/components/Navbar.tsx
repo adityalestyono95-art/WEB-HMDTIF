@@ -42,7 +42,7 @@ export default function Navbar() {
   }, [open])
 
   
-  const terang = pathname.startsWith("/news") || pathname.startsWith("/cabinet")
+  const terang = pathname.startsWith("/news") || pathname.startsWith("/cabinet") || pathname.startsWith("/about")
 
  
   const warnaHeader = terang ? "bg-[#FFFBF0]" : "bg-[#1e4d73]"

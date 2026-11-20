@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Courier_Prime, Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/footer";
 import SmoothScroll from "./components/SmoothScroll";
@@ -16,6 +16,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const courierPrime = Courier_Prime({
+  variable: "--font-courier-prime",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: {
     default: "HMDTIF FILKOM UB",
@@ -28,8 +46,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
+<<<<<<< Updated upstream
       lang="id"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+=======
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${courierPrime.variable} ${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
+>>>>>>> Stashed changes
     >
       <body className="min-h-full flex flex-col">
         <a

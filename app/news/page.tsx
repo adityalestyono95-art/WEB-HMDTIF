@@ -1,47 +1,59 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { Search } from 'lucide-react'
+import { ambilBerita, formatTanggal, type Berita } from '@/app/lib/news'
 
 export default function Page() {
   // Cari tulisan
   const [cari, setCari] = useState("")
   const [kategori, setKategori] = useState("SEMUA")
 
-  // true kalau berita ini harus tampil, false kalau harus disembunyikan
-  const tampil = (kategoriBerita: string, judul: string) => {
-    const cocokKategori = kategori === "SEMUA" || kategori === kategoriBerita
-    const cocokCari = judul.toLowerCase().includes(cari.toLowerCase())
-    return cocokKategori && cocokCari
-  }
+  // Berita dari API. null = masih memuat.
+  const [berita, setBerita] = useState<Berita[] | null>(null)
+  const [gagal, setGagal] = useState(false)
 
-  // Jumlah berita yang lolos filter saat ini.
-  const daftarBerita = [
-    { kategori: "PROKER", judul: "INTRIVIA 2026 Sambut Mahasiswa Baru DTIF Melalui Pengenalan Lingkungan & Nilai Integritas" },
-    { kategori: "INFO", judul: "EXTENDED! Open Recruitment Staff Muda HMDTIF Kabinet Bahtera Gatra" },
-    { kategori: "PROKER", judul: "DISMIK KRS & Crisis Center KRS SA Hadir Dampingi Perencanaan Studi Mahasiswa" },
-    { kategori: "PROKER", judul: "INFORCE & MAGANG GO! 2026 Siapkan Karier Profesional dan Portofolio Industri" },
-    { kategori: "PRESTASI", judul: "Kabar Prestasi & ADA ADIT: INFOKOM Rilis Episode Baru KomaTitik Podcast" },
-    { kategori: "PROKER", judul: "Departemen Bisnis Luncurkan Katalog HMDTIF Wear & Ekspansi Warung" },
-    { kategori: "PROKER", judul: "TEKRA & BUFFEST 2026 Jadi Panggung Apresiasi Karya Teknologi dan Seni" },
-    { kategori: "INFO", judul: "Senat HMDTIF Gelar Evaluasi Triwulan dan Rapat Besar Bersama Seluruh" },
-  ]
-  const adaHasil = daftarBerita.some((b) => tampil(b.kategori, b.judul))
+  useEffect(() => {
+    let batal = false
+    ambilBerita(100)
+      .then((d) => { if (!batal) setBerita(d) })
+      .catch(() => { if (!batal) setGagal(true) })
+    return () => { batal = true }
+  }, [])
+
+  // Filter di klien: datanya kecil dan pencarian jadi terasa instan.
+  const hasil = useMemo(() => {
+    if (!berita) return []
+    const kata = cari.trim().toLowerCase()
+    return berita.filter((b) => {
+      const cocokKategori = kategori === "SEMUA" || kategori === b.category
+      const cocokCari = kata === "" || b.title.toLowerCase().includes(kata) || b.excerpt.toLowerCase().includes(kata)
+      return cocokKategori && cocokCari
+    })
+  }, [berita, kategori, cari])
+
+  // Berita unggulan hanya tampil saat tidak ada filter aktif.
+  const unggulan = useMemo(() => {
+    if (!berita) return null
+    return berita.find((b) => b.is_featured) ?? null
+  }, [berita])
+
+  const tanpaFilter = kategori === "SEMUA" && cari.trim() === ""
 
   // class tombol filter: aktif (biru tua) dan tidak aktif (krem)
-  const tombolAktif = "rounded-full border border-[#2d5373] bg-[#2d5373] px-4 py-1.5 text-[11px] font-bold tracking-wider text-[#FFF4D6]"
-  const tombolBiasa = "rounded-full border border-black/10 bg-[#FFF4D6] px-4 py-1.5 text-[11px] font-bold tracking-wider text-[#2d5373] hover:bg-[#ffecb8] transition-colors duration-300"
+  const tombolAktif = "rounded-full border border-[#2F5470] bg-[#2F5470] px-4 py-1.5 text-[11px] font-bold tracking-wider text-[#FFF4D6]"
+  const tombolBiasa = "rounded-full border border-black/10 bg-[#FFF4D6] px-4 py-1.5 text-[11px] font-bold tracking-wider text-[#2F5470] hover:bg-[#F6D977] transition-colors duration-300"
 
   return (
     <div>
-      <div className="container mx-auto px-6 py-10 md:px-10 lg:px-16">
-        <h1 className='text-center text-3xl font-bold leading-tight text-[#2d5373] md:text-5xl'>
+      <div className="container mx-auto px-6 py-10 md:px-10 lg:px-16 xl:px-20">
+        <h1 className='text-center text-3xl font-bold leading-tight text-[#2F5470] md:text-5xl lg:text-[56px] lg:leading-[64px]'>
           Stay Updated on What<br />Matters Most
         </h1>
 
         {/* Find */}
-        <div className="mx-auto mt-8 flex max-w-xl items-center gap-3 rounded-full border border-black/10 bg-[#FFF4D6] px-5 py-1 focus-within:border-[#1f7189] focus-within:ring-2 focus-within:ring-[#1f7189]/40">
-          <Search size={16} aria-hidden="true" className="shrink-0 text-[#2d5373]/60" />
+        <div className="mx-auto mt-8 flex max-w-xl items-center gap-3 rounded-full border border-black/10 bg-[#FFF4D6] px-5 py-1 focus-within:border-[#2F5470] focus-within:ring-2 focus-within:ring-[#2F5470]/40">
+          <Search size={16} aria-hidden="true" className="shrink-0 text-[#2F5470]/60" />
           <label htmlFor="cari-berita" className="sr-only">Cari berita</label>
           <input
             id="cari-berita"
@@ -49,14 +61,14 @@ export default function Page() {
             value={cari}
             onChange={(e) => setCari(e.target.value)}
             placeholder="Cari berita program kerja, beasiswa, atau prestasi DTIF..."
-            className="min-h-11 w-full bg-transparent text-xs text-[#2d5373] outline-none placeholder:text-[#2d5373]/60 md:text-sm"
+            className="min-h-11 w-full bg-transparent text-xs text-[#2F5470] outline-none placeholder:text-[#2F5470]/60 md:text-sm"
           />
           {cari && (
             <button
               type="button"
               onClick={() => setCari("")}
               aria-label="Hapus kata pencarian"
-              className="flex min-h-11 min-w-11 items-center justify-center rounded-full text-lg leading-none text-[#2d5373] hover:text-[#1f7189]"
+              className="flex min-h-11 min-w-11 items-center justify-center rounded-full text-lg leading-none text-[#2F5470] hover:text-[#2F5470]"
             >
               ×
             </button>
@@ -64,25 +76,24 @@ export default function Page() {
         </div>
 
         {/* Berita utama, hanya saat tidak ada filter aktif */}
-        {kategori === "SEMUA" && cari.trim() === "" && (
-        <div className="news-box mt-10 rounded-3xl bg-gradient-to-br from-[#2d5373] to-[#2e8aa3] px-6 py-8 shadow-lg md:px-10 md:py-10">
-
-          <div className="news-nox">
-            <p className='text-right'>
-              <span className="inline-block rounded-full border border-white/40 bg-white/15 px-4 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER UNGGULAN</span>
-            </p>
+        {tanpaFilter && unggulan && (
+          <div className="news-box mt-10 rounded-3xl bg-gradient-to-br from-[#2F5470] to-[#2E8FA6] px-6 py-8 shadow-lg md:px-10 md:py-10">
+            <div className="news-nox">
+              <p className='text-right'>
+                <span className="inline-block rounded-full border border-white/40 bg-white/15 px-4 py-1 text-[10px] font-semibold tracking-wider text-white">{unggulan.category} UNGGULAN</span>
+              </p>
+            </div>
+            <p className="mt-2 text-xs text-yellow-200">{formatTanggal(unggulan.published_at)}</p>
+            <h2 className="mt-3 max-w-2xl text-2xl font-bold leading-snug text-[#FFF4D6] md:text-4xl">{unggulan.title}</h2>
+            <br />
+            <p className="max-w-xl text-xs leading-relaxed text-white/80 md:text-sm">{unggulan.excerpt}</p>
           </div>
-          <p className="mt-2 text-xs text-yellow-200">17 Oktober 2026</p>
-          <h2 className="mt-3 max-w-2xl text-2xl font-bold leading-snug text-[#FFF4D6] md:text-4xl">INTRIVIA 2026 Sambut Mahasiswa Baru DTIF Melalui Pengenalan Lingkungan &amp; Nilai Integritas</h2>
-          <br />
-          <p className="max-w-xl text-xs leading-relaxed text-white/80 md:text-sm">Departemen PSDM Bidang Humaniora sukses menyelenggarakan INTRIVIA (Informatics Introduction Environments Education) sebagai wadah orientasi dan pembentukan karakter mahasiswa baru DTIF.</p>
-        </div>
         )}
 
         {/* Latest News + filter */}
         <div className="news-box mt-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="box-lagi">
-            <h2 className="text-2xl font-bold text-[#2d5373] md:text-3xl">Latest News</h2>
+            <h2 className="text-2xl font-bold text-[#2F5470] md:text-3xl">Latest News</h2>
           </div>
           <div className="box-lagi flex flex-wrap gap-2">
             {["SEMUA", "PROKER", "INFO", "PRESTASI"].map((k) => (
@@ -99,121 +110,51 @@ export default function Page() {
         </div>
 
         {/* HP 1 kolom, tablet 2 kolom, laptop 3 kolom */}
-        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
-          {/* News 1 */}
-          <div className={`${tampil("PROKER", "INTRIVIA 2026 Sambut Mahasiswa Baru DTIF Melalui Pengenalan Lingkungan & Nilai Integritas") ? "flex" : "hidden"} flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md`}>
-            <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#1e4d73] to-[#2e8aa3]">
-              <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
-              <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-            </div>
-            <p className="mt-4 text-xs text-[#2d5373]/85">17 Oktober 2026</p>
-            <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">INTRIVIA 2026 Sambut Mahasiswa Baru DTIF Melalui Pengenalan Lingkungan & Nilai Integritas</h3>
-            <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-              Malang — Departemen PSDM Bidang Humaniora sukses menyelenggarakan INTRIVIA (Informatics Introduction Environments Education) sebagai wadah orientasi dan...
+        {gagal ? (
+          <div role="status" className="mt-6 rounded-2xl border border-black/10 bg-[#FFF4D6] px-6 py-10 text-center">
+            <p className="text-sm font-bold text-[#2F5470]">Berita belum bisa dimuat</p>
+            <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-[#2F5470]/85">
+              Server tidak merespons. Coba muat ulang halaman.
             </p>
           </div>
-
-          {/* News 2 */}
-          <div className={`${tampil("INFO", "EXTENDED! Open Recruitment Staff Muda HMDTIF Kabinet Bahtera Gatra") ? "flex" : "hidden"} flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md`}>
-            <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#3d5a78] to-[#1e4d73]">
-              <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">INFO</p>
-              <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-            </div>
-            <p className="mt-4 text-xs text-[#2d5373]/85">11 Oktober 2026</p>
-            <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">EXTENDED! Open Recruitment Staff Muda HMDTIF Kabinet Bahtera Gatra</h3>
-            <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-              Malang — Pendaftaran Staff Muda HMDTIF 2026 resmi diperpanjang pada 11–13 Oktober 2026. Segera lengkapi berkas online, unggah twibbon, dan ikuti tahap...
-            </p>
+        ) : !berita ? (
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md">
+                <div className="aspect-[16/9] rounded-xl bg-[#164A6E]/15" />
+                <div className="mt-4 h-3 w-24 rounded bg-[#2F5470]/15" />
+                <div className="mt-2 h-4 w-full rounded bg-[#2F5470]/15" />
+                <div className="mt-2 h-4 w-2/3 rounded bg-[#2F5470]/15" />
+              </div>
+            ))}
           </div>
-
-          {/* News 3 */}
-          <div className={`${tampil("PROKER", "DISMIK KRS & Crisis Center KRS SA Hadir Dampingi Perencanaan Studi Mahasiswa") ? "flex" : "hidden"} flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md`}>
-            <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#2e8aa3] to-[#1e4d73]">
-              <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
-              <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-            </div>
-            <p className="mt-4 text-xs text-[#2d5373]/85">08 Oktober 2026</p>
-            <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">DISMIK KRS & Crisis Center KRS SA Hadir Dampingi Perencanaan Studi Mahasiswa</h3>
-            <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-              Departemen ADVOKESMA membuka posko CC KRS SA dan forum Diskusi Akademik KRS (DISMIK KRS) untuk memastikan seluruh mahasiswa DTIF tidak mengalami...
-            </p>
+        ) : (
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {hasil.map((b) => (
+              <div key={b.id} className="flex flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md">
+                <div className="relative flex aspect-[16/9] items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-[#164A6E] to-[#2E8FA6]">
+                  <p className="absolute right-3 top-3 z-10 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">{b.category}</p>
+                  {b.image_url ? (
+                    <Image src={b.image_url} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover" />
+                  ) : (
+                    <Image src="/images/logo-hmdtif.png" alt="" width={56} height={56} />
+                  )}
+                </div>
+                <p className="mt-4 text-xs text-[#2F5470]/85">{formatTanggal(b.published_at)}</p>
+                <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2F5470]">{b.title}</h3>
+                <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2F5470]/80">{b.excerpt}</p>
+              </div>
+            ))}
           </div>
-
-          {/* News 4 */}
-          <div className={`${tampil("PROKER", "INFORCE & MAGANG GO! 2026 Siapkan Karier Profesional dan Portofolio Industri") ? "flex" : "hidden"} flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md`}>
-            <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#1e4d73] via-[#2e6f8f] to-[#f0b36b]">
-              <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
-              <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-            </div>
-            <p className="mt-4 text-xs text-[#2d5373]/85">04 Oktober 2026</p>
-            <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">INFORCE & MAGANG GO! 2026 Siapkan Karier Profesional dan Portofolio Industri</h3>
-            <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-              Malang — Divisi Widyantara Departemen PSDM mengakselerasi hardskill dan kesiapan karier mahasiswa lewat rangkaian Informatics Career Excellence (INFORCE)
-            </p>
-          </div>
-
-          {/* News 5 */}
-          <div className={`${tampil("PRESTASI", "Kabar Prestasi & ADA ADIT: INFOKOM Rilis Episode Baru KomaTitik Podcast") ? "flex" : "hidden"} flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md`}>
-            <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#2e8aa3] via-[#2e6f8f] to-[#1e4d73]">
-              <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PRESTASI</p>
-              <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-            </div>
-            <p className="mt-4 text-xs text-[#2d5373]/85">29 September 2026</p>
-            <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">Kabar Prestasi & ADA ADIT: INFOKOM Rilis Episode Baru KomaTitik Podcast</h3>
-            <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-              Malang — Departemen INFOKOM terus menghadirkan konten edukatif melalui segmen ADA ADIT (Ada Apa Dengan IT), KomaTitik Podcast, serta publikasi Kabar...
-            </p>
-          </div>
-
-          {/* News 6 */}
-          <div className={`${tampil("PROKER", "Departemen Bisnis Luncurkan Katalog HMDTIF Wear & Ekspansi Warung") ? "flex" : "hidden"} flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md`}>
-            <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#1e4d73] to-[#3a8fa3]">
-              <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
-              <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-            </div>
-            <p className="mt-4 text-xs text-[#2d5373]/85">22 September 2026</p>
-            <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">Departemen Bisnis Luncurkan Katalog HMDTIF Wear & Ekspansi Warung</h3>
-            <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-              Malang — Mengintegrasikan fungsi fundraising dan edukasi kewirausahaan, Departemen Bisnis menghadirkan koleksi merchandise resmi HMDTIF Wear
-            </p>
-          </div>
-
-          {/* News 7 */}
-          <div className={`${tampil("PROKER", "TEKRA & BUFFEST 2026 Jadi Panggung Apresiasi Karya Teknologi dan Seni") ? "flex" : "hidden"} flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md`}>
-            <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#3d5a78] via-[#2e8aa3] to-[#1e4d73]">
-              <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
-              <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-            </div>
-            <p className="mt-4 text-xs text-[#2d5373]/85">15 September 2026</p>
-            <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">TEKRA & BUFFEST 2026 Jadi Panggung Apresiasi Karya Teknologi dan Seni</h3>
-            <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-              Malang — Kolaborasi program kerja TEKRA (Technology & Creativity Arena) dan BUFFEST membuka ruang kreasi inovasi mahasiswa Teknik Informatika.
-            </p>
-          </div>
-
-          {/* News 8 */}
-          <div className={`${tampil("INFO", "Senat HMDTIF Gelar Evaluasi Triwulan dan Rapat Besar Bersama Seluruh") ? "flex" : "hidden"} flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md`}>
-            <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#1e4d73] to-[#3d5a78]">
-              <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">INFO</p>
-              <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-            </div>
-            <p className="mt-4 text-xs text-[#2d5373]/85">09 September 2026</p>
-            <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">Senat HMDTIF Gelar Evaluasi Triwulan dan Rapat Besar Bersama Seluruh</h3>
-            <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-              Malang — Guna menjaga tata kelola organisasi yang transparan dan akuntabel, Senat HMDTIF menyelenggarakan agenda Evaluasi Triwulan serta...
-            </p>
-          </div>
-
-        </div>
+        )}
 
         {/* Status hasil: kosong, bukan area kosong tanpa penjelasan */}
-        {!adaHasil && (
+        {berita && !gagal && hasil.length === 0 && (
           <div role="status" className="mt-6 rounded-2xl border border-black/10 bg-[#FFF4D6] px-6 py-10 text-center">
-            <p className="text-sm font-bold text-[#2d5373]">
+            <p className="text-sm font-bold text-[#2F5470]">
               Tidak ada berita yang cocok
             </p>
-            <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-[#2d5373]/85">
+            <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-[#2F5470]/85">
               {cari.trim() !== ""
                 ? `Tidak ada berita dengan kata "${cari.trim()}"${kategori !== "SEMUA" ? ` di kategori ${kategori}` : ""}. Coba kata lain atau lihat semua kategori.`
                 : `Belum ada berita di kategori ${kategori}.`}
@@ -221,7 +162,7 @@ export default function Page() {
             <button
               type="button"
               onClick={() => { setCari(""); setKategori("SEMUA") }}
-              className="mt-5 inline-flex min-h-11 items-center rounded-lg border border-[#2d5373] px-5 text-xs font-bold text-[#2d5373] hover:bg-[#FFFBF0]"
+              className="mt-5 inline-flex min-h-11 items-center rounded-lg border border-[#2F5470] px-5 text-xs font-bold text-[#2F5470] hover:bg-[#FFFBF0]"
             >
               Tampilkan semua berita
             </button>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import BeritaTerbaru from "./components/BeritaTerbaru";
 
 
 export default function Home() {
@@ -330,62 +331,7 @@ export default function Home() {
     </div>
   </div>
 
-  {/* HP 1 kolom, tablet 2 kolom, laptop 4 kolom */}
-  <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
-    {/* News 1 */}
-    <div className="flex flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md">
-      <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#1e4d73] to-[#2e8aa3]">
-        <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
-        <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-      </div>
-      <p className="mt-4 text-xs text-[#2d5373]/85">17 Oktober 2026</p>
-      <h4 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">INTRIVIA 2026 Sambut Mahasiswa Baru DTIF Melalui</h4>
-      <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-        Malang — Departemen PSDM Bidang Humaniora sukses menyelenggarakan INTRIVIA (Informatics Introduction...
-      </p>
-    </div>
-
-    {/* News 2 */}
-    <div className="flex flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md">
-      <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#3d5a78] to-[#1e4d73]">
-        <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">INFO</p>
-        <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-      </div>
-      <p className="mt-4 text-xs text-[#2d5373]/85">11 Oktober 2026</p>
-      <h4 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">EXTENDED! Open Recruitment Staff Muda HMDTIF Kabinet...</h4>
-      <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-        Malang — Pendaftaran Staff Muda HMDTIF 2026 resmi diperpanjang pada 11–13 Oktober 2026. Segera lengkapi...
-      </p>
-    </div>
-
-    {/* News 3 */}
-    <div className="flex flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md">
-      <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#2e8aa3] to-[#1e4d73]">
-        <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
-        <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-      </div>
-      <p className="mt-4 text-xs text-[#2d5373]/85">08 Oktober 2026</p>
-      <h4 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">DISMIK KRS & Crisis Center KRS SA Hadir Dampingi...</h4>
-      <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-        Departemen ADVOKESMA membuka posko CC KRS SA dan forum Diskusi Akademik KRS (DISMIK KRS) untuk...
-      </p>
-    </div>
-
-    {/* News 4 */}
-    <div className="flex flex-col rounded-2xl border border-black/10 bg-[#FFF4D6] p-4 shadow-md">
-      <div className="relative flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-[#1e4d73] via-[#2e6f8f] to-[#f0b36b]">
-        <p className="absolute right-3 top-3 rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white">PROKER</p>
-        <Image src="/images/logo-hmdtif.png" alt="Logo HMDTIF" width={56} height={56} />
-      </div>
-      <p className="mt-4 text-xs text-[#2d5373]/85">04 Oktober 2026</p>
-      <h4 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-[#2d5373]">INFORCE & MAGANG GO! 2026 Siapkan Karier Profesional...</h4>
-      <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[#2d5373]/80">
-        Malang — Divisi Widyantara Departemen PSDM mengakselerasi hardskill dan kesiapan karier mahasiswa...
-      </p>
-    </div>
-
-  </div>
+  <BeritaTerbaru />
 
   
 </div>

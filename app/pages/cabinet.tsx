@@ -121,7 +121,7 @@ export default function CabinetPage() {
 
   return (
     <div className="flex flex-col bg-white">
-      <div className="self-stretch bg-[#FFFBF0] pt-4">
+      <div className="self-stretch bg-[#FFFBF0] pt-24">
 
         {/* ── Main content ── */}
         <div className="self-stretch pt-10 px-20 mb-24 mx-11">

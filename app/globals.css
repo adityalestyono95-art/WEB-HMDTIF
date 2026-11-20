@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
-@theme {
-  --font-courier-prime: var(--font-courier-prime);
-  --font-space-grotesk: var(--font-space-grotesk);
-  --font-inter: var(--font-inter);
+/* Font dimuat lewat next/font di layout.tsx, jadi nama keluarganya di-hash.
+   Variabel CSS-nya yang dipakai, bukan nama "Space Grotesk" literal.
+   Body memakai Inter; heading memakai Space Grotesk lewat inline style. */
+body {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Hormati preferensi sistem: hentikan transisi dan animasi non-esensial. */

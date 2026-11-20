@@ -46,7 +46,7 @@ export default function Page() {
 
   return (
     <div>
-      <div className="container mx-auto px-6 py-10 md:px-10 lg:px-16 xl:px-20">
+      <div className="container mx-auto px-6 pb-10 pt-28 md:px-10 lg:px-16 xl:px-20">
         <h1 className='text-center text-3xl font-bold leading-tight text-[#2F5470] md:text-5xl lg:text-[56px] lg:leading-[64px]'>
           Stay Updated on What<br />Matters Most
         </h1>

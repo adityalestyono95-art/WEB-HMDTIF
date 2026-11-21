@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Sparkles,
@@ -36,12 +36,39 @@ const CP = "var(--font-courier-prime), monospace";
 
 export default function Home() {
   const [speechIndex, setSpeechIndex] = useState(0);
-  const [envelopeOpen, setEnvelopeOpen] = useState(true);
+  const [envelopeOpen, setEnvelopeOpen] = useState(false);
+  const [letterOut, setLetterOut] = useState(false);
+  const [speechVisible, setSpeechVisible] = useState(false);
+  const speechSectionRef = useRef<HTMLDivElement>(null);
   const [newsPage, setNewsPage] = useState(1);
   const [selectedNews, setSelectedNews] = useState<BeritaItem | null>(null);
 
   const currentSpeech = WELCOMING_SPEECHES[speechIndex];
   const beritaTampil = ALL_NEWS_ITEMS.slice((newsPage - 1) * 4, newsPage * 4);
+
+  // Saat bagian Welcoming Speech masuk layar:
+  // 1) amplop terbuka  2) surat keluar dari amplop  3) kartu Kahim & Wakahim muncul
+  useEffect(() => {
+    const el = speechSectionRef.current;
+    if (!el) return;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setEnvelopeOpen(true);
+          timers.push(setTimeout(() => setLetterOut(true), 700));
+          timers.push(setTimeout(() => setSpeechVisible(true), 2000));
+          observer.disconnect(); // animasi cukup sekali
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      timers.forEach(clearTimeout);
+    };
+  }, []);
 
   return (
     <div>
@@ -199,7 +226,7 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
+          <div ref={speechSectionRef} className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
             {/* Amplop teal interaktif */}
             <div className="flex flex-col items-center lg:col-span-5">
               <button
@@ -218,8 +245,12 @@ export default function Home() {
                     <polygon points="20,115 190,15 360,115" fill="#2F5470" stroke="#164A6E" strokeWidth="2" />
                   ) : null}
 
-                  {envelopeOpen && (
-                    <g>
+                  <g
+                      style={{
+                        transform: envelopeOpen && letterOut ? "translateY(-35px)" : "translateY(60px)",
+                        transition: "transform 1200ms cubic-bezier(0.22, 1, 0.36, 1)",
+                      }}
+                    >
                       <rect x="48" y="62" width="284" height="160" rx="10" fill="#FFF4D6" stroke="#FBC02D" strokeWidth="2" />
                       <text x="70" y="95" fill="#1F3A4D" fontSize="11" fontWeight="bold" fontFamily="Space Grotesk, sans-serif">
                         SAY HELLO TO BAHTERA GATRA
@@ -231,7 +262,6 @@ export default function Home() {
                         sambutan Ketua &amp; Wakil Ketua HMDTIF.
                       </text>
                     </g>
-                  )}
 
                   <rect x="20" y="115" width="340" height="180" rx="12" fill="#2E8FA6" stroke="#164A6E" strokeWidth="2" />
                   <polygon points="20,115 190,210 20,295" fill="#2F5470" opacity="0.88" />
@@ -252,7 +282,13 @@ export default function Home() {
             </div>
 
             {/* Tumpukan kartu sambutan */}
-            <div className="lg:col-span-7">
+            <div
+              className={`transition-all duration-[1300ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none lg:col-span-7 ${
+                speechVisible
+                  ? "translate-x-0 translate-y-0 scale-100 opacity-100"
+                  : "pointer-events-none -translate-y-[75%] scale-[0.3] opacity-0 lg:translate-y-0 lg:-translate-x-[85%]"
+              }`}
+            >
               <div
                 onClick={() => setSpeechIndex((prev) => (prev + 1) % WELCOMING_SPEECHES.length)}
                 className="group relative cursor-pointer select-none"

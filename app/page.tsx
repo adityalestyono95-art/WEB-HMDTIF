@@ -541,7 +541,7 @@ export default function Home() {
                 Latest <span className="text-[#2E8FA6]">News</span>
               </h2>
               <p className="mt-1 text-[15px] text-[#1F3A4D]/75">
-                Ikuti kabar kegiatan terbaru, program kerja departemen, dan prestasi mahasiswa Teknik
+                Ikuti kabar kegiatan terbaru, program kerja departemen, dan prestasi mahasiswa Departement Teknik
                 Informatika.
               </p>
             </div>

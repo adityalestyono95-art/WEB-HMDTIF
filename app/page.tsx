@@ -267,22 +267,35 @@ export default function Home() {
                   <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-stretch sm:text-left">
                     {/* Foto pimpinan */}
                     <div
-                      className="relative flex w-40 shrink-0 flex-col items-center justify-end overflow-hidden rounded-[16px] border border-[#FBC02D] p-4 text-center sm:w-48"
+                      className="relative flex min-h-[280px] w-40 shrink-0 flex-col items-center justify-end overflow-hidden rounded-[16px] border border-[#FBC02D] p-4 text-center sm:min-h-0 sm:w-48"
                       style={{ background: currentSpeech.avatarBg }}
                     >
+                      {currentSpeech.photo && (
+                        <img
+                          src={currentSpeech.photo}
+                          alt={`Foto ${currentSpeech.name}`}
+                          className="absolute inset-0 h-full w-full object-cover object-top"
+                        />
+                      )}
+
                       <span
-                        className="absolute left-2.5 right-2.5 top-2.5 rounded-md bg-white/15 py-1 text-[9px] font-bold uppercase tracking-widest text-[#FFF4D6]"
+                        className="absolute left-2.5 right-2.5 top-2.5 z-10 rounded-md bg-[#164A6E]/70 py-1 text-[9px] font-bold uppercase tracking-widest text-[#FFF4D6] backdrop-blur-sm"
                         style={{ fontFamily: CP }}
                       >
                         {currentSpeech.badge}
                       </span>
-                      <div className="mb-2 mt-8 flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#F6D977] bg-[#FFF4D6]/20">
-                        <Users className="h-8 w-8 text-[#FFF4D6]" aria-hidden="true" />
-                      </div>
-                      <div className="flex h-24 w-32 flex-col items-center justify-center rounded-t-3xl bg-[#FFF4D6]/90 px-2">
-                        <BahteraGatraLogo size={26} idSuffix="speech-avatar" />
-                        <span className="mt-1 font-mono text-[9px] font-bold text-[#1F3A4D]">FOTO PROFIL</span>
-                      </div>
+
+                      {!currentSpeech.photo && (
+                        <>
+                          <div className="mb-2 mt-8 flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#F6D977] bg-[#FFF4D6]/20">
+                            <Users className="h-8 w-8 text-[#FFF4D6]" aria-hidden="true" />
+                          </div>
+                          <div className="flex h-24 w-32 flex-col items-center justify-center rounded-t-3xl bg-[#FFF4D6]/90 px-2">
+                            <BahteraGatraLogo size={26} idSuffix="speech-avatar" />
+                            <span className="mt-1 font-mono text-[9px] font-bold text-[#1F3A4D]">FOTO PROFIL</span>
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     <div className="flex flex-1 flex-col justify-between text-left">

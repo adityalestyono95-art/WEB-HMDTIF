@@ -11,6 +11,7 @@ import './globals.css';
 import Footer from './components/footer';
 import SmoothScroll from './components/SmoothScroll';
 import Navbar from './components/Navbar';
+import SplashScreen from './components/SplashScreen';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -65,6 +66,7 @@ export default function RootLayout({
           Lompat ke konten utama
         </a>
         <SmoothScroll />
+        <SplashScreen />
         <Navbar />
         <main id="konten" className="flex flex-1 flex-col">
           {children}

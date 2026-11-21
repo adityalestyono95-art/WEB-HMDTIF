@@ -19,6 +19,7 @@ export const WELCOMING_SPEECHES = [
   {
     id: 'ketua',
     name: 'M. Raka Pratama Wijaya',
+    photo: '/images/KAHIM-HMDTIF.png',
     role: 'Ketua Himpunan Mahasiswa Departemen Teknik Informatika (HMDTIF) FILKOM UB 2026',
     nim: 'NIM. 235150200111042',
     greeting: 'Say Hello to BAHTERA GATRA — rumah kolaborasi seluruh mahasiswa DTIF! ⛵✨',

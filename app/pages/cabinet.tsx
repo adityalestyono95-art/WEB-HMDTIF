@@ -385,7 +385,7 @@ export default function CabinetPage() {
             </div>
 
             {/* ── SENAT ── */}
-            <div className="flex flex-col self-stretch mx-0 lg:mx-20 gap-[1px]">
+            <div className="flex flex-col self-stretch mb-20 md:mb-36 mx-0 lg:mx-20 gap-[1px]">
               <div
                 className="flex flex-col items-start self-stretch bg-[#FFF4D6] relative p-5 sm:p-8 lg:p-[38px] rounded-[18px] border-2 border-solid border-[#E2C887]"
                 style={{ boxShadow: "0px 10px 28px #1F3A4D12" }}

@@ -19,18 +19,28 @@ export const InfokomIconLarge = ({ className = "" }: { className?: string }) => 
   </svg>
 );
 
-// ADVOKESMA Icon - Shield/Protection symbol for advocacy
+// ADVOKESMA Icon
 export const AdvokesmaIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M10 2.5L4.375 4.6875C4.375 9.0625 6.5625 13.125 10 15.625C13.4375 13.125 15.625 9.0625 15.625 4.6875L10 2.5Z" fill="#FBC02D" fillOpacity="0.3" stroke="#FBC02D" strokeWidth="1.25" strokeLinejoin="round"/>
-    <path d="M7.5 10L9.0625 11.5625L12.8125 7.8125" stroke="#FBC02D" strokeWidth="1.5625" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M10 1.875L18.125 5.9375L10 10L1.875 5.9375L10 1.875Z" strokeWidth="1.25" strokeLinejoin="round" stroke="#FBC02D"/>
+    <path d="M10 9.0625C10.8629 9.0625 11.5625 8.36294 11.5625 7.5C11.5625 6.63706 10.8629 5.9375 10 5.9375C9.13706 5.9375 8.4375 6.63706 8.4375 7.5C8.4375 8.36294 9.13706 9.0625 10 9.0625Z" fill="#FBC02D"/>
+    <path opacity="0.85" d="M6.5625 9.6875C7.25286 9.6875 7.8125 9.12786 7.8125 8.4375C7.8125 7.74714 7.25286 7.1875 6.5625 7.1875C5.87214 7.1875 5.3125 7.74714 5.3125 8.4375C5.3125 9.12786 5.87214 9.6875 6.5625 9.6875Z" fill="#FBC02D"/>
+    <path opacity="0.85" d="M13.4375 9.6875C14.1279 9.6875 14.6875 9.12786 14.6875 8.4375C14.6875 7.74714 14.1279 7.1875 13.4375 7.1875C12.7471 7.1875 12.1875 7.74714 12.1875 8.4375C12.1875 9.12786 12.7471 9.6875 13.4375 9.6875Z" fill="#FBC02D"/>
+    <path d="M7.1875 11.875C7.1875 10.3125 12.8125 10.3125 12.8125 11.875" strokeWidth="1.25" strokeLinecap="round" stroke="#FBC02D"/>
+    <path d="M3.75 12.8125L9.375 15.9375V18.125L3.75 15V12.8125Z" fill="#FBC02D"/>
+    <path opacity="0.85" d="M16.25 12.8125L10.625 15.9375V18.125L16.25 15V12.8125Z" fill="#FBC02D"/>
   </svg>
 );
 
 export const AdvokesmaIconLarge = ({ className = "" }: { className?: string }) => (
   <svg width="160" height="138" viewBox="0 0 160 138" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M80 20L35 37.5C35 72.5 52 105 80 125C108 105 125 72.5 125 37.5L80 20Z" fill="#2F5470" fillOpacity="0.3" stroke="#2F5470" strokeWidth="10" strokeLinejoin="round"/>
-    <path d="M60 80L72.5 92.5L102.5 62.5" stroke="#2F5470" strokeWidth="12.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M80 15L145 47.5L80 80L15 47.5L80 15Z" strokeWidth="10" strokeLinejoin="round" stroke="#2F5470"/>
+    <path d="M80 72.5C86.9036 72.5 92.5 66.9036 92.5 60C92.5 53.0964 86.9036 47.5 80 47.5C73.0964 47.5 67.5 53.0964 67.5 60C67.5 66.9036 73.0964 72.5 80 72.5Z" fill="#2F5470"/>
+    <path opacity="0.85" d="M52.5 77.5C58.0228 77.5 62.5 73.0228 62.5 67.5C62.5 61.9772 58.0228 57.5 52.5 57.5C46.9772 57.5 42.5 61.9772 42.5 67.5C42.5 73.0228 46.9772 77.5 52.5 77.5Z" fill="#2F5470"/>
+    <path opacity="0.85" d="M107.5 77.5C113.023 77.5 117.5 73.0228 117.5 67.5C117.5 61.9772 113.023 57.5 107.5 57.5C101.977 57.5 97.5 61.9772 97.5 67.5C97.5 73.0228 101.977 77.5 107.5 77.5Z" fill="#2F5470"/>
+    <path d="M57.5 95C57.5 82.5 102.5 82.5 102.5 95" strokeWidth="10" strokeLinecap="round" stroke="#2F5470"/>
+    <path d="M30 102.5L75 127.5V145L30 120V102.5Z" fill="#2F5470"/>
+    <path opacity="0.85" d="M130 102.5L85 127.5V145L130 120V102.5Z" fill="#2F5470"/>
   </svg>
 );
 
@@ -68,20 +78,24 @@ export const BisnisIconLarge = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
-// PIT Icon - Code/Tech symbol
+// PIT Icon
 export const PitIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M6.875 5.625L3.125 10L6.875 14.375" stroke="#FBC02D" strokeWidth="1.875" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M13.125 5.625L16.875 10L13.125 14.375" stroke="#FBC02D" strokeWidth="1.875" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M11.25 3.75L8.75 16.25" stroke="#FBC02D" strokeWidth="1.875" strokeLinecap="round"/>
+    <path d="M10.625 3.125H13.75L9.375 16.875H6.25L10.625 3.125Z" fill="#FBC02D"/>
+    <path d="M3.125 4.375H6.875V8.125H3.125V4.375Z" strokeWidth="1.25" stroke="#FBC02D"/>
+    <path d="M3.125 11.25H6.875L5.625 15.625H3.125V11.25Z" fill="#FBC02D"/>
+    <path d="M13.75 4.375H16.875V8.75H13.75V4.375Z" fill="#FBC02D"/>
+    <path d="M13.125 11.875H16.875V15.625H13.125V11.875Z" strokeWidth="1.25" stroke="#FBC02D"/>
   </svg>
 );
 
 export const PitIconLarge = ({ className = "" }: { className?: string }) => (
   <svg width="160" height="138" viewBox="0 0 160 138" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M55 45L25 80L55 115" stroke="#2F5470" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M105 45L135 80L105 115" stroke="#2F5470" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M90 30L70 130" stroke="#2F5470" strokeWidth="15" strokeLinecap="round"/>
+    <path d="M85 25H110L75 135H50L85 25Z" fill="#2F5470"/>
+    <path d="M25 35H55V65H25V35Z" strokeWidth="10" stroke="#2F5470"/>
+    <path d="M25 90H55L45 125H25V90Z" fill="#2F5470"/>
+    <path d="M110 35H135V70H110V35Z" fill="#2F5470"/>
+    <path d="M105 95H135V125H105V95Z" strokeWidth="10" stroke="#2F5470"/>
   </svg>
 );
 

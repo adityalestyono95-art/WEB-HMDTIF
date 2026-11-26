@@ -33,6 +33,7 @@ import {
 
 const SG = "var(--font-space-grotesk), sans-serif";
 const CP = "var(--font-courier-prime), monospace";
+const SPEECH_INTERVAL_MS = 90_000; // 1 menit 30 detik
 
 export default function Home() {
   const [speechIndex, setSpeechIndex] = useState(0);
@@ -69,6 +70,17 @@ export default function Home() {
       timers.forEach(clearTimeout);
     };
   }, []);
+
+  // Ganti kartu sambutan otomatis tiap 1 menit 30 detik.
+  // Timer baru jalan setelah kartu muncul (speechVisible) dan di-reset
+  // kalau speechIndex berubah, jadi durasi tiap kartu selalu penuh.
+  useEffect(() => {
+    if (!speechVisible) return;
+    const timer = setTimeout(() => {
+      setSpeechIndex((prev) => (prev + 1) % WELCOMING_SPEECHES.length);
+    }, SPEECH_INTERVAL_MS);
+    return () => clearTimeout(timer);
+  }, [speechVisible, speechIndex]);
 
   return (
     <div>
@@ -246,22 +258,22 @@ export default function Home() {
                   ) : null}
 
                   <g
-                      style={{
-                        transform: envelopeOpen && letterOut ? "translateY(-35px)" : "translateY(60px)",
-                        transition: "transform 1200ms cubic-bezier(0.22, 1, 0.36, 1)",
-                      }}
-                    >
-                      <rect x="48" y="62" width="284" height="160" rx="10" fill="#FFF4D6" stroke="#FBC02D" strokeWidth="2" />
-                      <text x="70" y="95" fill="#1F3A4D" fontSize="11" fontWeight="bold" fontFamily="Space Grotesk, sans-serif">
-                        SAY HELLO TO BAHTERA GATRA
-                      </text>
-                      <text x="70" y="115" fill="#2E8FA6" fontSize="9.5" fontFamily="Inter, sans-serif">
-                        Klik kartu di samping untuk membaca
-                      </text>
-                      <text x="70" y="130" fill="#2E8FA6" fontSize="9.5" fontFamily="Inter, sans-serif">
-                        sambutan Ketua &amp; Wakil Ketua HMDTIF.
-                      </text>
-                    </g>
+                    style={{
+                      transform: envelopeOpen && letterOut ? "translateY(-35px)" : "translateY(60px)",
+                      transition: "transform 1200ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    }}
+                  >
+                    <rect x="48" y="62" width="284" height="160" rx="10" fill="#FFF4D6" stroke="#FBC02D" strokeWidth="2" />
+                    <text x="70" y="95" fill="#1F3A4D" fontSize="11" fontWeight="bold" fontFamily="Space Grotesk, sans-serif">
+                      SAY HELLO TO BAHTERA GATRA
+                    </text>
+                    <text x="70" y="115" fill="#2E8FA6" fontSize="9.5" fontFamily="Inter, sans-serif">
+                      Sambutan Ketua &amp; Wakil Ketua HMDTIF
+                    </text>
+                    <text x="70" y="130" fill="#2E8FA6" fontSize="9.5" fontFamily="Inter, sans-serif">
+                      berganti otomatis di samping.
+                    </text>
+                  </g>
 
                   <rect x="20" y="115" width="340" height="180" rx="12" fill="#2E8FA6" stroke="#164A6E" strokeWidth="2" />
                   <polygon points="20,115 190,210 20,295" fill="#2F5470" opacity="0.88" />
@@ -281,7 +293,7 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Tumpukan kartu sambutan */}
+            {/* Tumpukan kartu sambutan (ganti otomatis tiap 1 menit 30 detik) */}
             <div
               className={`transition-all duration-[1300ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none lg:col-span-7 ${
                 speechVisible
@@ -289,15 +301,12 @@ export default function Home() {
                   : "pointer-events-none -translate-y-[75%] scale-[0.3] opacity-0 lg:translate-y-0 lg:-translate-x-[85%]"
               }`}
             >
-              <div
-                onClick={() => setSpeechIndex((prev) => (prev + 1) % WELCOMING_SPEECHES.length)}
-                className="group relative cursor-pointer select-none"
-              >
+              <div className="group relative select-none">
                 <div className="pointer-events-none absolute inset-0 translate-x-3 translate-y-3 rotate-[1.8deg] rounded-[20px] border border-[#1F3A4D]/20 bg-[#EED9A4]" />
                 <div className="pointer-events-none absolute inset-0 -translate-x-2 translate-y-1.5 -rotate-[1.2deg] rounded-[20px] border border-[#1F3A4D]/20 bg-[#FFF4D6]" />
 
                 <div
-                  className="relative z-10 rounded-[20px] border-2 border-[#1F3A4D]/30 bg-[#FFFBF0] p-6 transition-transform duration-300 group-hover:-translate-y-1 sm:p-8"
+                  className="relative z-10 rounded-[20px] border-2 border-[#1F3A4D]/30 bg-[#FFFBF0] p-6 sm:p-8"
                   style={{ boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
                 >
                   <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-stretch sm:text-left">
@@ -353,7 +362,7 @@ export default function Home() {
                           </h4>
                           <p className="text-[12px] font-medium text-[#2F5470]">{currentSpeech.role}</p>
                         </div>
-                        <span className="rounded-full border border-[#FBC02D] bg-[#FFF4D6] px-3 py-1 text-[11px] font-bold text-[#1F3A4D]">
+                        <span className="whitespace-nowrap rounded-full border border-[#FBC02D] bg-[#FFF4D6] px-3 py-1 text-[11px] font-bold text-[#1F3A4D]">
                           {speechIndex + 1} / {WELCOMING_SPEECHES.length}
                         </span>
                       </div>
@@ -363,8 +372,7 @@ export default function Home() {
               </div>
 
               <p className="mt-5 text-center text-[13px] font-medium text-[#1F3A4D]/60">
-                Tap to switch card (
-                {speechIndex === 0 ? "Lihat Sambutan Wakil Ketua →" : "← Lihat Sambutan Ketua Himpunan"})
+                Liha sambutan dari wakahim setelah 1 menit 30 detik ---
               </p>
             </div>
           </div>

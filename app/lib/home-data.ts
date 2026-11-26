@@ -18,10 +18,10 @@ export const OFFICIAL_MISI = [
 export const WELCOMING_SPEECHES = [
   {
     id: 'ketua',
-    name: 'M. Raka Pratama Wijaya',
+    name: 'M. Bagas Anugrah',
     photo: '/images/KAHIM-HMDTIF.png',
     role: 'Ketua Himpunan Mahasiswa Departemen Teknik Informatika (HMDTIF) FILKOM UB 2026',
-    nim: 'NIM. 235150200111042',
+    nim: 'NIM. 235150201111008',
     greeting: 'Say Hello to BAHTERA GATRA — rumah kolaborasi seluruh mahasiswa DTIF! ⛵✨',
     paragraphs: [
       'Tumbuh Bersama, Satukan Gatra!',
@@ -34,9 +34,10 @@ export const WELCOMING_SPEECHES = [
   },
   {
     id: 'wakil',
-    name: 'Nadia Putri Maharani',
+    name: 'M Rafli Abidi Utama',
+    photo: '/images/Foto-Wakahim.jpeg',
     role: 'Wakil Ketua Himpunan Mahasiswa Departemen Teknik Informatika (HMDTIF) FILKOM UB 2026',
-    nim: 'NIM. 235150201111018',
+    nim: 'NIM. 235150301111035',
     greeting: 'Bahtera Gatra hadir sebagai wadah pengembangan karakter dan kolaborasi aktif mahasiswa DTIF. 🌟',
     paragraphs: [
       'Sinergi Internal, Akselerasi Karya!',

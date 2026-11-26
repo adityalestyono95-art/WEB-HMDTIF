@@ -1,3 +1,5 @@
+import AboutLogoCarousel from "../components/LogoCarousel";
+
 export const metadata = {
   title: "About — HMDTIF Bahtera Gatra 2026",
   description: "Tentang HMDTIF FILKOM UB Kabinet Bahtera Gatra 2026",
@@ -44,48 +46,9 @@ export default function About() {
               </svg>
             </div>
 
-            <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8 lg:gap-12">
-              {/* Logo Carousel */}
-              <div className="flex justify-center items-center gap-3 sm:gap-8 lg:gap-16 pb-[21.5px]">
-                <button className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 shrink-0 bg-white/10 border border-white/20 rounded-full flex items-center justify-center opacity-60 blur-[2px]">
-                  <img src="/images/logo-hmdtif.png" alt="Logo" className="w-6 sm:w-8 lg:w-10 h-auto" />
-                </button>
-                
-                <div className="w-[104px] h-[104px] sm:w-[124px] sm:h-[124px] lg:w-[144px] lg:h-[144px] shrink-0 bg-[#FFF4D6] border-4 border-[#FBC02D] rounded-full shadow-[0_0_40px_rgba(251,192,45,0.35)] flex items-center justify-center">
-                  <img src="/images/logo-hmdtif.png" alt="Logo Bahtera" className="w-[54px] sm:w-[64px] lg:w-[74px] h-auto" />
-                </div>
-
-                <button className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 shrink-0 bg-white/10 border border-white/20 rounded-full flex items-center justify-center opacity-60 blur-[2px]">
-                  <img src="/images/logo-hmdtif.png" alt="Logo" className="w-6 sm:w-8 lg:w-10 h-auto" />
-                </button>
-              </div>
-
-              {/* Badge */}
-              <div className="bg-white/15 border border-white/30 px-[14px] py-1 rounded-full">
-                <span className="text-[#F6D977] text-[11px] font-bold tracking-[1.1px] uppercase font-[family-name:var(--font-space-grotesk)]">
-                  BAHTERA
-                </span>
-              </div>
-
-              {/* Title */}
-              <h2 className="text-[#FFF4D6] text-2xl leading-9 sm:text-[30px] sm:leading-[45px] font-bold text-center font-[family-name:var(--font-space-grotesk)]">
-                Lambang Bahtera
-              </h2>
-
-              {/* Description */}
-              <p className="text-[rgba(242,247,250,0.9)] text-sm sm:text-[15.3px] leading-6 sm:leading-[26px] text-center w-full max-w-[672px]">
-                Merupakan sebuah kapal besar yang mahasiswa DTIF
-              </p>
-
-              {/* Pagination Dots */}
-              <div className="flex gap-2 sm:gap-2.5 pt-3 sm:pt-5">
-                <div className="w-3 h-3 bg-white/40 rounded-full"></div>
-                <div className="w-3 h-3 bg-white/40 rounded-full"></div>
-                <div className="w-8 h-3 bg-[#FBC02D] rounded-full"></div>
-                <div className="w-3 h-3 bg-white/40 rounded-full"></div>
-                <div className="w-3 h-3 bg-white/40 rounded-full"></div>
-                <div className="w-3 h-3 bg-white/40 rounded-full"></div>
-              </div>
+            {/* Logo carousel interaktif: bisa dipencet dan digeser */}
+            <div className="relative z-10">
+              <AboutLogoCarousel />
             </div>
           </div>
 

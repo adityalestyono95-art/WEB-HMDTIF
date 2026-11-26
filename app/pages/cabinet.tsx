@@ -130,7 +130,7 @@ export default function CabinetPage() {
   const activeDept = departments.find((d) => d.id === openDept) ?? null;
 
   return (
-    <div className="flex flex-col bg-white overflow-x-hidden">
+    <div className="flex flex-col bg-white">
       <div className="self-stretch bg-[#FFFBF0] pt-24">
 
         {/* ── Main content ── */}

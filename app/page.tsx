@@ -372,7 +372,7 @@ export default function Home() {
               </div>
 
               <p className="mt-5 text-center text-[13px] font-medium text-[#1F3A4D]/60">
-                Liha sambutan dari wakahim setelah 1 menit 30 detik ---
+                Lihat sambutan dari wakahim setelah 1 menit 30 detik ---
               </p>
             </div>
           </div>

@@ -300,7 +300,7 @@ function DepartmentModal({ department, onClose }: DepartmentModalProps) {
   return (
     // Overlay backdrop
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#444444]/90 p-4 md:p-10"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-[#444444E6] p-4 overflow-y-auto"
       onClick={onClose}
     >
       {/* Card — stop propagation so clicking inside doesn't close */}
@@ -310,117 +310,115 @@ function DepartmentModal({ department, onClose }: DepartmentModalProps) {
         aria-modal="true"
         aria-label={department.name}
         tabIndex={-1}
-        className="mb-12 flex w-full max-w-[768px] flex-col items-start rounded-3xl border-2 border-solid border-[#FBC02D] bg-[#FFFBF0] py-6 pl-6 pr-6 md:py-[34px] md:pl-[34px] md:pr-0"
-        style={{ boxShadow: "0px 25px 50px #00000040" }}
+        className="relative w-full max-w-[768px] my-10 bg-[#FFFBF0] rounded-3xl border-2 border-[#FBC02D] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ── Header ── */}
-        <div className="mb-[33px] flex w-full items-start gap-[15px] border-b border-solid border-b-[#1F3A4D26] pr-0 md:pr-[34px]">
-          <div className="flex shrink-0 items-center gap-3.5 pb-4 flex-1">
-            {/* Dept icon */}
-            <div className="flex shrink-0 flex-col items-start rounded-2xl bg-[#2F5470] p-2.5">
-              <img width={28} height={28}
-                src={department.iconSrc}
-                className="w-7 h-7 rounded-2xl object-fill"
-                alt=""
-              />
-            </div>
-            {/* Dept name */}
-            <div className="flex flex-col shrink-0 items-start pt-1.5 gap-[1px]">
-              <span className="text-[#1f7189] text-[11px] font-bold">
-                {department.badge}
-              </span>
-              <span className="text-[#2F5470] text-xl font-bold whitespace-pre-line md:text-[26px]">
-                {department.name}
-              </span>
-            </div>
-          </div>
-          {/* Close button */}
-          <button
-            className="flex flex-col shrink-0 items-center justify-center bg-[#FFF4D6] text-left w-9 h-9 mt-2 rounded-[9999px] border-0 cursor-pointer hover:bg-[#F6E7B0] transition-colors"
-            onClick={onClose}
-            aria-label="Tutup"
-          >
-            <span className="text-[#1F3A4D] text-lg font-bold leading-none">×</span>
-          </button>
-        </div>
-
-        {/* ── Description ── */}
-        <p className="mb-5 w-full text-[13px] leading-relaxed text-[#1F3A4D] md:pr-[34px]">
-          {department.description}
-        </p>
-
-        {/* ── Bidang / Fokus Kerja ── */}
-        <div className="mb-3.5 flex w-full flex-col gap-4">
-          {department.bidang.map((b) => (
-            <div
-              key={b.title}
-              className="flex flex-col self-stretch bg-[#FFF4D6] p-[17px] gap-2 rounded-2xl border border-solid border-[#1F3A4D26]"
-            >
-              <span className="text-[#2F5470] text-[15px] font-bold">{b.title}</span>
-              <div className="flex flex-col self-stretch gap-1.5">
-                {b.items.map((item, i) => (
-                  <div key={i} className="flex items-start self-stretch gap-2">
-                    <div className="flex flex-col shrink-0 items-center pt-0.5">
-                      <img width={16} height={16} src={item.iconSrc} className="w-4 h-4 object-fill" alt="" />
-                    </div>
-                    <span className="text-[#1F3A4D] text-xs leading-relaxed">{item.text}</span>
-                  </div>
-                ))}
+        <div className="p-8 md:p-[34px]">
+          {/* ── Header ── */}
+          <div className="mb-4 flex items-start justify-between pb-4 border-b border-[#1F3A4D1A]">
+            <div className="flex items-center gap-3.5">
+              {/* Dept icon */}
+              <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[#2F5470]">
+                <img width={28} height={28}
+                  src={department.iconSrc}
+                  className="w-7 h-7"
+                  alt=""
+                />
+              </div>
+              {/* Dept name */}
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[#2E8FA6] text-[11px] font-bold uppercase tracking-wider font-[family-name:var(--font-space-grotesk)]">
+                  {department.badge}
+                </span>
+                <span className="text-[#2F5470] text-[26px] font-bold leading-[39px] whitespace-pre-line font-[family-name:var(--font-space-grotesk)]">
+                  {department.name}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
+            {/* Close button */}
+            <button
+              className="flex items-center justify-center w-10 h-10 bg-[#FFF4D6] rounded-full hover:bg-[#F6E7B0] transition-colors"
+              onClick={onClose}
+              aria-label="Tutup"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 5L15 15M5 15L15 5" stroke="#1F3A4D" strokeWidth="1.67" strokeLinecap="round"/>
+              </svg>
+            </button>
+          </div>
 
-        {/* ── Program Kerja ── */}
-        <div className="mb-6 flex w-full flex-col gap-[9px]">
-          <span className="text-[#2F5470] text-[15px] font-bold">
-            Program Kerja Resmi ({department.programKerja.length})
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {department.programKerja.map((proker) => (
-              <button
-                key={proker}
-                className="flex flex-col shrink-0 items-start bg-[#2F5470] text-left py-[5px] px-3 rounded-xl border-0"
-                onClick={() => {}}
+          {/* ── Description ── */}
+          <p className="mb-5 text-[13.6px] leading-[23px] text-[#1F3A4DE6] font-[family-name:var(--font-inter)]">
+            {department.description}
+          </p>
+
+          {/* ── Bidang / Fokus Kerja ── */}
+          <div className="mb-6 flex flex-col gap-4">
+            {department.bidang.map((b) => (
+              <div
+                key={b.title}
+                className="flex flex-col bg-[#FFF4D6] p-4 gap-2 rounded-2xl border border-[#1F3A4D26]"
               >
-                <span className="text-[#FFF4D6] text-[11px]">• {proker}</span>
-              </button>
+                <span className="text-[#2F5470] text-[15px] font-bold leading-[22px] font-[family-name:var(--font-space-grotesk)]">{b.title}</span>
+                <div className="flex flex-col gap-1.5">
+                  {b.items.map((item, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <div className="flex items-start pt-0.5">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <circle cx="8" cy="8" r="6.67" stroke="#2E8FA6" strokeWidth="1.33"/>
+                          <circle cx="8" cy="8" r="2" stroke="#2E8FA6" strokeWidth="1.33"/>
+                        </svg>
+                      </div>
+                      <span className="text-[#1F3A4DE6] text-[12.6px] leading-[20px] font-[family-name:var(--font-inter)]">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
-        </div>
 
-        {/* ── Staff ── */}
-        {department.staff.length > 0 && (
-          <div className="flex w-full flex-col gap-[11px]">
-            <span className="text-[#2F5470] text-[15px] font-bold">
-              Jajaran Pengurus &amp; Staf Departemen
+          {/* ── Program Kerja ── */}
+          <div className="mb-6 flex flex-col gap-2.5">
+            <span className="text-[#2F5470] text-[15px] font-bold leading-[22px] uppercase tracking-[0.75px] font-[family-name:var(--font-space-grotesk)]">
+              Program Kerja Resmi ({department.programKerja.length})
             </span>
-            <div className="flex flex-wrap gap-3">
-              {department.staff.map((s) => (
+            <div className="flex flex-wrap gap-2">
+              {department.programKerja.map((proker) => (
                 <div
-                  key={s.name}
-                  className="flex w-full items-center gap-3 rounded-xl border border-solid border-[#1F3A4D26] bg-[#FFF4D6] px-[13px] py-3 sm:w-[325px]"
+                  key={proker}
+                  className="flex items-center bg-[#2F5470] py-1.5 px-3 rounded-xl"
                 >
-                  <button
-                    className="flex flex-col shrink-0 items-center justify-center bg-[#2F5470] text-left py-[9px] px-[11px] rounded-[9999px] border-0 min-w-[36px]"
-                    onClick={() => {}}
-                  >
-                    <span className="text-[#FFF4D6] text-xs font-bold">{s.initials}</span>
-                  </button>
-                  <div className="flex-1">
-                    <div className="flex flex-col items-start">
-                      <span className="text-[#1F3A4D] text-[13px] font-bold">{s.name}</span>
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <span className="text-[#1f7189] text-[10px] font-bold">{s.role}</span>
-                    </div>
-                  </div>
+                  <span className="text-[#FFF4D6] text-[11.6px] leading-[18px] font-medium font-[family-name:var(--font-inter)]">• {proker}</span>
                 </div>
               ))}
             </div>
           </div>
-        )}
+
+          {/* ── Staff ── */}
+          {department.staff.length > 0 && (
+            <div className="flex flex-col gap-3">
+              <span className="text-[#2F5470] text-[15px] font-bold leading-[22px] uppercase tracking-[0.75px] font-[family-name:var(--font-space-grotesk)]">
+                Jajaran Pengurus &amp; Staf Departemen
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {department.staff.map((s) => (
+                  <div
+                    key={s.name}
+                    className="flex items-center gap-3 rounded-xl border border-[#1F3A4D26] bg-[#FFF4D6] p-3"
+                  >
+                    <div className="flex items-center justify-center w-9 h-9 bg-[#2F5470] rounded-full shrink-0">
+                      <span className="text-[#FFF4D6] text-xs font-bold font-[family-name:var(--font-inter)]">{s.initials}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#1F3A4D] text-[13px] font-bold leading-[20px] font-[family-name:var(--font-inter)]">{s.name}</div>
+                      <div className="text-[#2E8FA6] text-[10.5px] font-bold leading-[16px] uppercase font-[family-name:var(--font-courier-prime)]">{s.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

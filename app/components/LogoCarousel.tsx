@@ -26,21 +26,21 @@ const SLIDES: Slide[] = [
     badge: "ANGGOTA HMDTIF",
     title: "Anggota HMDTIF",
     text: "Mewakilkan mahasiswa DTIF yang ada di dalam himpunan sebagai anggota HMDTIF.",
-    image: "/images/logo-hmdtif.png",
+    image: "/images/logo-anggota.png",
   },
   {
     id: "departemen",
     badge: "LIMA DEPARTEMEN",
     title: "Lima Departemen",
     text: "Mewakilkan departemen kepengurusan HMDTIF.",
-    image: "/images/logo-hmdtif.png",
+    image: "/images/logo-departemen.png",
   },
   {
     id: "kabinet",
     badge: "TIGA KABINET SEBELUMNYA",
     title: "Tiga Kabinet Sebelumnya",
     text: "Membawa nilai-nilai baik yang telah ditinggalkan dari kepengurusan sebelumnya sebagai landasan berlayar.",
-    image: "/images/logo-hmdtif.png",
+    image: "/images/logo-kabinet.png",
   },
 ];
 
